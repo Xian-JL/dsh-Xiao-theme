@@ -89,9 +89,6 @@ function useClickRippleLayer(overlayRef, enabled) {
 			}
 			for (const animation of layer.getAnimations({ subtree: true })) animation.cancel();
 		};
-		const handleVisibility = () => {
-			if (document.visibilityState !== "visible") clearPool();
-		};
 		const receive = event => {
 			const rect = overlayRef.current?.getBoundingClientRect();
 			const point = toOverlayPoint(event.detail?.clientX, event.detail?.clientY, rect);
@@ -101,13 +98,17 @@ function useClickRippleLayer(overlayRef, enabled) {
 			playWindRipple(node, point, generation);
 		};
 		document.addEventListener(XIAO_CLICK_RIPPLE_EVENT, receive);
-		document.addEventListener("visibilitychange", handleVisibility);
+		document.addEventListener("visibilitychange", clearPool);
 		window.addEventListener("blur", clearPool);
+		window.addEventListener("focus", clearPool);
+		window.addEventListener("pageshow", clearPool);
 		window.addEventListener("pagehide", clearPool);
 		return () => {
 			document.removeEventListener(XIAO_CLICK_RIPPLE_EVENT, receive);
-			document.removeEventListener("visibilitychange", handleVisibility);
+			document.removeEventListener("visibilitychange", clearPool);
 			window.removeEventListener("blur", clearPool);
+			window.removeEventListener("focus", clearPool);
+			window.removeEventListener("pageshow", clearPool);
 			window.removeEventListener("pagehide", clearPool);
 			clearPool();
 		};

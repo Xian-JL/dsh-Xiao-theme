@@ -18,7 +18,7 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 ## Install
 
 ```powershell
-dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.1.tgz"
+dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.2.tgz"
 dsh web
 ```
 

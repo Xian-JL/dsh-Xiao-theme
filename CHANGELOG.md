@@ -1,5 +1,11 @@
 # 更新记录
 
+## 1.1.2 — Focus recovery and artwork blending
+
+- 窗口重新获得焦点、文档可见性切换、`pageshow` 与 `pagehide` 时清理完整点击风痕池，避免动画节点在 Desktop 窗口切换后残留。
+- 状态/余额面板位置改为根据伙伴坐标、面板尺寸和视口剩余空间计算；空间不足时居中，超高内容可在面板内滚动。
+- 生日贺图主立绘增加径向软边，使方形场景自然融入主题背景。
+
 ## 1.1.1 — Companion panel placement and transient cleanup
 
 - 状态/余额面板按伙伴位置与可用空间选择左右、上下方向，避免面板被伙伴或视口边缘遮住。

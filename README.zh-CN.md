@@ -19,7 +19,7 @@
 
 ```powershell
 # 从本地构建产物安装（示例）
-dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.1.tgz"
+dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.2.tgz"
 dsh web
 ```
 
