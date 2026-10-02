@@ -18,8 +18,8 @@
 ## 安装
 
 ```powershell
-# 从本地构建产物安装（示例）
-dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.3.tgz"
+# 从 GitHub Release 的预构建安装包安装
+dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-xiao-theme-latest.tgz
 dsh web
 ```
 
@@ -49,6 +49,8 @@ dsh plugin --profile web remove dsh-xiao-theme
 | 复位 | 伙伴位置复位、全部设置复位（二次点击确认） |
 
 ## 开发
+
+市场提交与后续发行步骤见 [插件市场提交全流程](docs/MARKETPLACE_SUBMISSION.md)。本插件通过 GitHub Release 分发，无需发布 npm。
 
 ```powershell
 npm install

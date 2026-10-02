@@ -18,7 +18,7 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 ## Install
 
 ```powershell
-dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.3.tgz"
+dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-xiao-theme-latest.tgz
 dsh web
 ```
 
@@ -48,6 +48,8 @@ Then open **Settings → General → Xiao theme**. The theme is enabled by defau
 | Reset | Reset companion position, reset all settings (two-step confirm) |
 
 ## Development
+
+Marketplace submission and release maintenance: [full workflow](docs/MARKETPLACE_SUBMISSION.md). Distribution uses prebuilt GitHub Release assets; no npm publication is required.
 
 ```powershell
 npm install
