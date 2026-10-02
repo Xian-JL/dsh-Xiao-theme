@@ -25,14 +25,22 @@ export function ripplePoolSlot(sequence, poolSize = XIAO_RIPPLE_POOL_SIZE) {
 	return ((sequence % poolSize) + poolSize) % poolSize;
 }
 
+/** Retire a pooled burst before cancelling fills, so cancellation cannot expose idle artwork. */
+export function clearWindRipple(node) {
+	if (!node) return;
+	node.hidden = true;
+	delete node.dataset.generation;
+	for (const animation of node.getAnimations?.({ subtree: true }) ?? []) animation.cancel();
+}
+
 /** Play one burst inside a pooled node. Returns false when the node is unusable. */
 export function playWindRipple(node, point, generation) {
 	if (!node || typeof node.querySelector !== "function") return false;
 	if (!point || !Number.isFinite(point.x) || !Number.isFinite(point.y)) return false;
+	clearWindRipple(node);
 	node.hidden = false;
 	node.dataset.generation = String(generation);
 	node.style.transform = `translate3d(${point.x}px, ${point.y}px, 0)`;
-	for (const animation of node.getAnimations({ subtree: true })) animation.cancel();
 
 	const animate = (selector, keyframes, options) => node.querySelector(selector)?.animate(keyframes, {
 		duration: XIAO_RIPPLE_DURATION_MS,

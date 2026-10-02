@@ -43,7 +43,7 @@ check(/cancelAnimationFrame\(frameRef\.current\)/.test(overlay), "pending frames
 check(/clearTimeout\(reactionTimer\.current\)/.test(overlay), "reaction timers must be cleared on unmount");
 check(/return \(\) => \{ if \(timer\.current !== null\) clearTimeout\(timer\.current\); \}/.test(overlay), "session feedback timers must be cleared");
 check(/style\.removeProperty\("--xiao-parallax-x"\)/.test(parallax), "parallax properties must be removed when disabled");
-check(/animation\.cancel\(\)/.test(overlay), "in-flight ripple animations must be cancelled when disabled");
+check(/clearWindRipple\(node\)/.test(overlay), "in-flight ripple nodes must be hidden and cancelled when disabled");
 
 // --- visibility and reduced-motion gates ------------------------------------
 check(/"data-hidden": String\(!activity\.visible\)/.test(overlay), "the overlay must publish the page-hidden flag");

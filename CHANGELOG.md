@@ -1,5 +1,12 @@
 # 更新记录
 
+## 1.1.3 — Hidden ripple fix and rounded birthday artwork
+
+- 修复 `.xiao-wind-ripple` 的 `display: block` 覆盖 `hidden` 状态的问题。隐藏的池节点明确不绘制，动画子图形默认透明，取消动画不会暴露静态边框。
+- 统一播放前与窗口切换时的风痕清理，防止旧动画完成回调影响复用节点。
+- 生日贺图采用 32 px 圆角裁切，设置预览采用 20 px 圆角，去掉此前的径向蒙版。
+- 增加播放、取消、复用和过期完成回调的回归检查，并提供真实浏览器回归预览。
+
 ## 1.1.2 — Focus recovery and artwork blending
 
 - 窗口重新获得焦点、文档可见性切换、`pageshow` 与 `pagehide` 时清理完整点击风痕池，避免动画节点在 Desktop 窗口切换后残留。

@@ -97,3 +97,20 @@ npm run assets      # 需要 Pillow；重建 assets/ 下的处理后素材
 npm run verify      # 288 条断言
 npm pack            # 产出可安装 tgz
 ```
+
+## 7. V1.1.3 回归验证（2026-10-02）
+
+本次重新执行 `npm run verify`：构建、契约检查和八个测试套件通过，共 **300 条断言**。新增风痕生命周期检查覆盖正常完成、立即取消、取消后复用、过期完成回调和非法坐标。
+
+真实 Chromium 浏览器通过 `node scripts/preview-regression.mjs` 对比上一提交样式（`/before`）和当前样式（`/`），使用相同真实 DOM 和风痕播放/清理函数：
+
+| 场景 | 上一版样式 | V1.1.3 |
+| --- | --- | --- |
+| 六个池节点处于 `hidden` 状态 | `display: block`，子图形默认 `opacity: 1` | `display: none`，子图形默认 `opacity: 0` |
+| 播放后立即取消 | 六组绿色边框、紫色弧线和方块仍绘制，形态与用户截图一致 | 六个节点均隐藏，不绘制残留图形 |
+| 取消后重新播放 | — | 六个节点可以重新播放，正常结束后均隐藏 |
+| 生日贺图 | 方形图像边缘 | 主舞台计算圆角 32 px，`overflow: hidden`；目视确认四角裁切 |
+
+根因是作者 `.xiao-wind-ripple { display: block }` 覆盖浏览器默认 `[hidden]` 规则；取消 Web Animations 后，动画透明度被移除，静态图形重新出现。V1.1.3 显式声明 `[hidden]` 不绘制，并将子图形设为默认透明。
+
+以上是实际浏览器的隔离回归，不代表已在 Electron Desktop 中重新完成外部窗口切换验收；更新后的 Desktop 由用户验收。

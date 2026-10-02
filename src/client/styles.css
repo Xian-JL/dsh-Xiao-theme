@@ -224,12 +224,15 @@ body[data-xiao-state='running'] .xiao-decoration,
 
 .xiao-hero-frame[data-variant='celebration'] {
   aspect-ratio: 1 / 1;
+  border-radius: 32px;
+  corner-shape: round;
+  overflow: hidden;
 }
 
 .xiao-hero-frame[data-variant='celebration'] .xiao-hero {
   object-position: center 58%;
-  -webkit-mask-image: radial-gradient(ellipse 70% 72% at 50% 46%, #000 50%, rgba(0, 0, 0, 0.88) 70%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 72% at 50% 46%, #000 50%, rgba(0, 0, 0, 0.88) 70%, transparent 100%);
+  -webkit-mask-image: none;
+  mask-image: none;
   filter: saturate(0.96) contrast(1.02) drop-shadow(0 18px 30px rgba(6, 24, 22, 0.28));
 }
 
@@ -718,11 +721,17 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
   pointer-events: none;
 }
 
+/* Author display rules must never override the pool's hidden lifecycle state. */
+.xiao-wind-ripple[hidden] {
+  display: none !important;
+}
+
 .xiao-wind-ripple > i {
   position: absolute;
   top: 0;
   left: 0;
   display: block;
+  opacity: 0;
   pointer-events: none;
   will-change: transform, opacity;
 }
@@ -1022,8 +1031,16 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 
 .xiao-live-preview[data-variant='celebration'] .xiao-live-preview__hero {
   object-position: center 58%;
-  -webkit-mask-image: radial-gradient(ellipse 70% 72% at 50% 46%, #000 50%, rgba(0, 0, 0, 0.88) 70%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 72% at 50% 46%, #000 50%, rgba(0, 0, 0, 0.88) 70%, transparent 100%);
+  position: relative;
+  inset: auto;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  margin-inline: auto;
+  border-radius: 20px;
+  corner-shape: round;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .xiao-live-preview[data-ornament='false'] .xiao-live-preview__wind {

@@ -29,6 +29,7 @@ import { xiaoParticleIndices, xiaoParticleStyle } from "../motion/particles.js";
 import {
 	XIAO_RIPPLE_FRAGMENT_COUNT,
 	XIAO_RIPPLE_POOL_SIZE,
+	clearWindRipple,
 	playWindRipple,
 	rippleFragmentMotion,
 	ripplePoolSlot,
@@ -84,10 +85,8 @@ function useClickRippleLayer(overlayRef, enabled) {
 			const layer = layerRef.current;
 			if (!layer) return;
 			for (const node of layer.children) {
-				node.hidden = true;
-				delete node.dataset.generation;
+				clearWindRipple(node);
 			}
-			for (const animation of layer.getAnimations({ subtree: true })) animation.cancel();
 		};
 		const receive = event => {
 			const rect = overlayRef.current?.getBoundingClientRect();
