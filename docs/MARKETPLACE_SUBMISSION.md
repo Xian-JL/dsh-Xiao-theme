@@ -9,7 +9,7 @@
 | 项目 | 状态 |
 | --- | --- |
 | 插件 | `dsh-xiao-theme@1.1.3` |
-| 源码 | `https://github.com/Xian-JL/dsh-Xiao-theme`，目前私有 |
+| 源码 | `https://github.com/Xian-JL/dsh-Xiao-theme`，已由所有者改为公开 |
 | Release | `v1.1.3`，已含预构建安装包 |
 | 验证 | 300 条断言通过；旧版风痕边框问题已在实际 Chromium 中复现并做修复对照；用户已完成 Desktop 验收 |
 | 分发 | GitHub Release，不发布 npm |
@@ -97,11 +97,12 @@ tarball: https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-
 ## 8. 本轮执行结果
 
 - 已从最新上游基线建立 `add-xiao-theme`，提交 `3d1f07ab2`。
-- 分支已推送至用户 fork；[查看待提交差异](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/compare/main...Xian-JL:add-xiao-theme)。最终提交只新增一个 YAML。
+- 分支已推送至用户 fork，并已提交 [PR #6404 — Add dsh-Xiao-theme](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/6404)。PR 为 Open，非 draft；实际 diff 只新增一个 YAML，共 7 行。
 - 目录解析校验通过：4413 条记录，魈条目恰好 1 条，字段校验错误为 0。
 - 仓库描述和 `dsh-plugin` topic 已设置。
 - v1.1.3 已增加 `dsh-xiao-theme-latest.tgz` 和 `SHA256SUMS.txt`。固定版本包与 latest 包的 SHA-256 均为 `e4a5e7fcaace4aa8c06680f11d00619f08d71e85461c59ced58ad386b2cc8ac7`。
-- 当前仓库仍私有，公开转换等待仓库所有者确认，尚未创建市场 PR。
+- 仓库所有者已改为公开；匿名读取 `package.json` 和下载 latest tgz 均成功，下载 SHA-256 与固定版本一致。
+- 上游首轮 `PR check` 已启动。仓库年龄门槛仍待 2026-10-03 13:52:28（北京时间）达标，最终 CI 和维护者评审以 PR 页面为准。
 - README 生成校验通过。Windows 上运行 awesome-lint 时需显式使用相对路径，默认 Windows 盘符会被误认为 URL；本轮使用 awesome-lint 官方 API，传入 `README.md` 与上游仓库 URL，以避免用户 fork 缺少上游 `awesome` / `awesome-list` topic 造成的错误上下文。结果退出码 0，97 条既有警告，魈新增行无警告或错误。
 - 上游 PR workflow 的日期、能力披露、讨论关联三个测试文件全部通过，共 18 项测试。
 - 本地站点验证使用上游 PR workflow 的 `SKIP_PUBLISH_CHECKS=1`，用于不发布站点的 CI 预览；它不会改动市场线上发布规则。构建通过，4413 条目 × 2 语言及 sitemap、数量 badge 生成成功。

@@ -26,8 +26,8 @@ dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/
 - [x] One plugin YAML entry
 - [x] `package.json` declares `dsh.bundle` and includes `cordis.patch.yml`
 - [x] Accurate descriptions and `theme` category
-- [ ] Public repository and anonymously downloadable Release asset
+- [x] Public repository and anonymously downloadable Release asset
 - [ ] Repository is at least one day old: eligible from `2026-10-03T05:52:28Z`
 - [x] `dsh-plugin` topic
 
-This submission is prepared for review. Pending publication and repository-age items will be updated when they actually pass.
+The repository is public and the Release tarball has been downloaded anonymously and verified against its SHA-256. The repository-age gate is pending until `2026-10-03T05:52:28Z`; the gate rechecks age automatically. The age item will be marked complete only after it passes.
