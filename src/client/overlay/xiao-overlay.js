@@ -18,7 +18,8 @@ import {
 	isDragGesture,
 	nudgeCompanionPosition,
 	presentedCompanionFlip,
-	presentedCompanionPosition
+	presentedCompanionPosition,
+	resolveCompanionPanelPlacement
 } from "../companion/position.js";
 import { useXiaoPagePhase } from "../scene/hero-phase.js";
 import { isXiaoHeroSettled, isXiaoHeroTarget } from "../scene/phase-model.js";
@@ -78,6 +79,19 @@ function useClickRippleLayer(overlayRef, enabled) {
 	const sequence = useRef(0);
 	useEffect(() => {
 		if (!enabled || typeof document === "undefined") return undefined;
+		const clearPool = () => {
+			sequence.current += XIAO_RIPPLE_POOL_SIZE;
+			const layer = layerRef.current;
+			if (!layer) return;
+			for (const node of layer.children) {
+				node.hidden = true;
+				delete node.dataset.generation;
+			}
+			for (const animation of layer.getAnimations({ subtree: true })) animation.cancel();
+		};
+		const handleVisibility = () => {
+			if (document.visibilityState !== "visible") clearPool();
+		};
 		const receive = event => {
 			const rect = overlayRef.current?.getBoundingClientRect();
 			const point = toOverlayPoint(event.detail?.clientX, event.detail?.clientY, rect);
@@ -87,9 +101,15 @@ function useClickRippleLayer(overlayRef, enabled) {
 			playWindRipple(node, point, generation);
 		};
 		document.addEventListener(XIAO_CLICK_RIPPLE_EVENT, receive);
+		document.addEventListener("visibilitychange", handleVisibility);
+		window.addEventListener("blur", clearPool);
+		window.addEventListener("pagehide", clearPool);
 		return () => {
 			document.removeEventListener(XIAO_CLICK_RIPPLE_EVENT, receive);
-			for (const animation of layerRef.current?.getAnimations({ subtree: true }) ?? []) animation.cancel();
+			document.removeEventListener("visibilitychange", handleVisibility);
+			window.removeEventListener("blur", clearPool);
+			window.removeEventListener("pagehide", clearPool);
+			clearPool();
 		};
 	}, [enabled, overlayRef]);
 	return layerRef;
@@ -157,6 +177,7 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 	const [reacting, setReacting] = useState(false);
 	const [panelOpen, setPanelOpen] = useState(false);
 	const [manualRefreshStatus, setManualRefreshStatus] = useState("idle");
+	const [, refreshPanelPlacement] = useState(0);
 
 	const converged = value.convergeWhileRunning && (sessionState === "running" || sessionState === "sending");
 	const rippleEnabled = value.enabled && value.clickRipple && activity.visible && !activity.reducedMotion;
@@ -185,6 +206,7 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 			frame = null;
 			if (dragRef.current !== null) return;
 			const rect = overlay.getBoundingClientRect();
+			refreshPanelPlacement(revision => revision + 1);
 			setPosition(current => {
 				const next = clampCompanionPercent(current, rect, companionPixelSize(value.companionSize));
 				return next.x === current.x && next.y === current.y ? current : next;
@@ -385,6 +407,11 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 		override: dockedOverride,
 		flipped: value.companionFlipped
 	});
+	const panelPlacement = resolveCompanionPanelPlacement(
+		presentedPosition,
+		overlayRef.current?.getBoundingClientRect(),
+		companionPixelSize(value.companionSize)
+	);
 	const companionState = dragging ? "dragging"
 		: sessionState !== "idle" ? sessionState
 			: reacting ? "reacting"
@@ -490,8 +517,8 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 
 		value.showCompanion ? h("div", {
 			className: "xiao-companion-cluster",
-			"data-bubble-side": presentedPosition.x < 50 ? "right" : "left",
-			"data-bubble-vertical": presentedPosition.y < 30 ? "down" : "up",
+			"data-bubble-side": panelPlacement.horizontal,
+			"data-bubble-vertical": panelPlacement.vertical,
 			"data-dragging": String(dragging),
 			"data-open": String(panelOpen),
 			"data-state": companionState,

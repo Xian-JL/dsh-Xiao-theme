@@ -25,6 +25,29 @@ export function companionPixelSize(size) {
 	return XIAO_COMPANION_PX[size] ?? XIAO_COMPANION_PX.md;
 }
 
+/** Choose a status-panel side and vertical direction that fit the companion's current safe area. */
+export function resolveCompanionPanelPlacement(position, rect, companionSizePx, panel = { width: 260, height: 320, gap: 14, margin: 12 }) {
+	if (!rect || !Number.isFinite(rect.width) || !Number.isFinite(rect.height) || rect.width <= 0 || rect.height <= 0) {
+		return { horizontal: "center", vertical: "up" };
+	}
+	const safe = displayCompanionPosition(position);
+	const centerX = safe.x / 100 * rect.width;
+	const centerY = safe.y / 100 * rect.height;
+	const halfCompanion = Math.max(0, Number.isFinite(companionSizePx) ? companionSizePx : 0) / 2;
+	const panelWidth = Math.min(panel.width, Math.max(0, rect.width - panel.margin * 2));
+	const panelHeight = Math.min(panel.height, Math.max(0, rect.height * 0.72));
+	const roomRight = rect.width - centerX - halfCompanion - panel.gap - panel.margin;
+	const roomLeft = centerX - halfCompanion - panel.gap - panel.margin;
+	const roomDown = rect.height - centerY - halfCompanion - panel.gap - panel.margin;
+	const roomUp = centerY - halfCompanion - panel.gap - panel.margin;
+	const horizontal = roomRight >= panelWidth ? "right"
+		: roomLeft >= panelWidth ? "left" : "center";
+	const vertical = roomDown >= panelHeight ? "down"
+		: roomUp >= panelHeight ? "up"
+			: roomDown >= roomUp ? "down" : "up";
+	return { horizontal, vertical };
+}
+
 /** Guard against a stored position from a much larger or smaller window. */
 export function displayCompanionPosition(position) {
 	const x = Number.isFinite(position?.x) ? clamp(position.x, 0, 100) : XIAO_COMPANION_DOCK.x;

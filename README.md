@@ -9,7 +9,7 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 - **Complete light and dark themes** built from roughly 80 semantic tokens. Light/dark follows DSH; the "minimal / balanced / immersive" presets only change decoration strength.
 - **One visual language** across the sidebar brand, welcome page, conversation page and settings.
 - **Two character artworks**: choose the standing illustration or birthday artwork; the selected image shares one welcome/conversation slot and its reversible, interruptible 700 ms transition.
-- **Xiao companion**: idle float, hover, click-to-open status panel, drag with saved position, arrow-key movement (Shift to accelerate, Home to reset), and a temporary welcome-page dock that never overwrites the user's position.
+- **Xiao companion**: idle float, hover, click-to-open status panel, drag with saved position, arrow-key movement (Shift to accelerate, Home to reset), and a temporary welcome-page dock that never overwrites the user's position. Its status and balance panel chooses a clear side from the companion's location.
 - **Truthful session feedback**: sending, running, completed, ended, failed, stopped, unknown and awaiting-input, isolated per `sessionId` so background sessions cannot repaint the main view.
 - **Optional official balance**: off by default. When enabled the Host reads `https://api.deepseek.com/user/balance`; the API key never reaches the client. Below CNY 10 the companion shows a local warning only.
 - **Amplified motion system**: breathing, companion reactions, click wind traces, ambient motes and immersive parallax use three times their original amplitude, with bounded effects and reduced-motion support.
@@ -18,7 +18,7 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 ## Install
 
 ```powershell
-dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.0.tgz"
+dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.1.tgz"
 dsh web
 ```
 
