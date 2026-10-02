@@ -40,7 +40,7 @@
 /* --- quiet native enhancements ------------------------------------------- */
 
 [data-xiao-pressed='true'] {
-  filter: brightness(0.96) saturate(0.98);
+  filter: brightness(0.88) saturate(0.94);
   transition: filter 90ms ease-out;
 }
 
@@ -111,10 +111,10 @@ body[data-xiao-state='running'] .xiao-decoration,
   right: clamp(-160px, -9vw, -70px);
   width: clamp(220px, 25vw, 380px);
   height: auto;
-  opacity: 0.1;
+  opacity: 0.3;
   transform: rotate(8deg);
-  mix-blend-mode: soft-light;
-  filter: saturate(0.85) contrast(1.05);
+  mix-blend-mode: normal;
+  filter: saturate(1.12) contrast(1.28) brightness(1.04) drop-shadow(0 0 16px color-mix(in srgb, var(--xiao-jade) 18%, transparent));
 }
 
 .xiao-ornament--cloud {
@@ -222,6 +222,14 @@ body[data-xiao-state='running'] .xiao-decoration,
   bottom: -18px;
 }
 
+.xiao-hero-frame[data-variant='celebration'] {
+  aspect-ratio: 1 / 1;
+}
+
+.xiao-hero-frame[data-variant='celebration'] .xiao-hero {
+  object-position: center 58%;
+}
+
 .xiao-hero-frame[data-opacity='low'] {
   opacity: 0.2;
 }
@@ -279,7 +287,7 @@ body[data-xiao-state='running'] .xiao-decoration,
   pointer-events: none;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(10px);
+  transform: translateY(30px);
   transition: opacity 700ms ease-out, transform 700ms cubic-bezier(0.22, 0.68, 0.24, 1), visibility 700ms;
 }
 
@@ -446,7 +454,7 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
   opacity: 0.9;
   border-color: color-mix(in srgb, var(--xiao-gold) 62%, transparent);
   border-style: dashed;
-  animation: xiao-ring-spin 2.4s linear infinite;
+  animation: xiao-ring-spin 800ms linear infinite;
 }
 
 .xiao-companion[data-state='sending'] .xiao-companion__spark {
@@ -458,7 +466,7 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
   opacity: 0.95;
   border-color: color-mix(in srgb, var(--xiao-jade) 66%, transparent);
   border-top-color: transparent;
-  animation: xiao-ring-spin 2.4s linear infinite;
+  animation: xiao-ring-spin 800ms linear infinite;
 }
 
 .xiao-companion[data-state='running'] .xiao-companion__sprite img {
@@ -708,39 +716,39 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 }
 
 .xiao-wind-ripple__core {
-  width: 10px;
-  height: 10px;
-  margin: -5px 0 0 -5px;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
   background: linear-gradient(135deg, var(--xiao-jade), color-mix(in srgb, var(--xiao-jade) 40%, transparent));
-  box-shadow: 0 0 10px color-mix(in srgb, var(--xiao-jade) 46%, transparent);
+  box-shadow: 0 0 30px color-mix(in srgb, var(--xiao-jade) 100%, transparent);
 }
 
 .xiao-wind-ripple__ring {
-  width: 82px;
-  height: 82px;
-  margin: -41px 0 0 -41px;
-  border: 1px solid color-mix(in srgb, var(--xiao-jade) 54%, transparent);
+  width: 246px;
+  height: 246px;
+  margin: -123px 0 0 -123px;
+  border: 3px solid color-mix(in srgb, var(--xiao-jade) 100%, transparent);
   border-radius: 50%;
 }
 
 .xiao-wind-ripple__arc {
-  width: 54px;
-  height: 22px;
-  margin: -11px 0 0 -27px;
-  border-top: 1px solid color-mix(in srgb, var(--xiao-jade) 62%, transparent);
+  width: 162px;
+  height: 66px;
+  margin: -33px 0 0 -81px;
+  border-top: 3px solid color-mix(in srgb, var(--xiao-jade) 92%, transparent);
   border-radius: 50%;
   transform-origin: center;
 }
 
 .xiao-wind-ripple__arc--two {
-  border-top-color: color-mix(in srgb, var(--xiao-violet) 46%, transparent);
+  border-top-color: color-mix(in srgb, var(--xiao-violet) 84%, transparent);
 }
 
 .xiao-wind-ripple__fragment {
-  width: 3px;
-  height: 3px;
-  margin: -1.5px 0 0 -1.5px;
-  background: color-mix(in srgb, var(--xiao-jade) 76%, white 24%);
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  background: color-mix(in srgb, var(--xiao-jade) 100%, white 0%);
 }
 
 /* --- sidebar brand ------------------------------------------------------- */
@@ -777,7 +785,7 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
   inset: -8%;
   border: 1px solid color-mix(in srgb, var(--xiao-jade, #35c4a6) 42%, transparent);
   border-left-color: transparent;
-  animation: xiao-ring-spin 9s linear infinite;
+  animation: xiao-ring-spin 3s linear infinite;
 }
 
 .xiao-brand-shell__wind {
@@ -943,7 +951,7 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 
 .xiao-live-preview__stage {
   position: relative;
-  height: 140px;
+  height: 168px;
   overflow: hidden;
   border-radius: 10px;
   background: radial-gradient(circle at 72% 24%, color-mix(in srgb, var(--xiao-jade) 16%, transparent), transparent 68%);
@@ -970,12 +978,12 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 
 .xiao-live-preview__hero {
   position: absolute;
-  right: -6%;
-  bottom: -8%;
-  width: 74%;
-  height: auto;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
-  opacity: 0.5;
+  object-position: center bottom;
+  opacity: 0.88;
   transition: transform 300ms ease-out, opacity 300ms ease-out;
 }
 
@@ -985,33 +993,23 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 }
 
 .xiao-live-preview[data-intensity='immersive'] .xiao-live-preview__hero {
-  opacity: 0.82;
+  opacity: 1;
 }
 
 .xiao-live-preview[data-intensity='minimal'] .xiao-live-preview__hero {
-  opacity: 0.24;
+  opacity: 0.55;
 }
 
 .xiao-live-preview[data-opacity='low'] .xiao-live-preview__hero {
-  opacity: 0.3;
+  opacity: 0.62;
 }
 
 .xiao-live-preview[data-opacity='high'] .xiao-live-preview__hero {
-  opacity: 0.78;
+  opacity: 1;
 }
 
-.xiao-live-preview__companion {
-  position: absolute;
-  right: 8%;
-  top: 16%;
-  width: 30%;
-  height: auto;
-  filter: drop-shadow(0 6px 12px rgba(6, 24, 22, 0.24));
-  animation: xiao-companion-float 3.6s ease-in-out infinite;
-}
-
-.xiao-live-preview[data-companion='false'] .xiao-live-preview__companion {
-  display: none;
+.xiao-live-preview[data-variant='celebration'] .xiao-live-preview__hero {
+  object-position: center 58%;
 }
 
 .xiao-live-preview[data-ornament='false'] .xiao-live-preview__wind {
@@ -1273,24 +1271,24 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 
 @keyframes xiao-hero-breathe {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.006) translateY(-1.5px); }
+  50% { transform: scale(1.018) translateY(-4.5px); }
 }
 
 @keyframes xiao-companion-float {
   0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-3px) scale(1.01); }
+  50% { transform: translateY(-9px) scale(1.03); }
 }
 
 @keyframes xiao-companion-hop {
   0% { transform: translateY(0) scale(1); }
-  35% { transform: translateY(-7px) scale(1.03); }
-  70% { transform: translateY(0) scale(0.99); }
+  35% { transform: translateY(-21px) scale(1.09); }
+  70% { transform: translateY(0) scale(0.97); }
   100% { transform: translateY(0) scale(1); }
 }
 
 @keyframes xiao-companion-hover-breathe {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
+  50% { transform: translateY(-6px); }
 }
 
 @keyframes xiao-ring-spin {
@@ -1299,37 +1297,36 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
 }
 
 @keyframes xiao-ring-collapse {
-  0% { transform: scale(1.16); opacity: 0.2; }
-  60% { transform: scale(0.98); opacity: 1; }
+  0% { transform: scale(1.48); opacity: 0; }
+  60% { transform: scale(0.94); opacity: 1; }
   100% { transform: scale(1); opacity: 0.9; }
 }
 
 @keyframes xiao-spark-pulse {
-  0%, 100% { opacity: 0.3; transform: scale(0.8); }
-  50% { opacity: 0.95; transform: scale(1.2); }
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50% { opacity: 1; transform: scale(1.6); }
 }
 
 @keyframes xiao-mote-drift {
-  0% { transform: translate3d(0, 0, 0); opacity: calc(var(--xiao-mote-opacity) * 0.5); }
-  50% { transform: translate3d(calc(var(--xiao-mote-drift) * 0.5), -18px, 0); opacity: var(--xiao-mote-opacity); }
-  100% { transform: translate3d(var(--xiao-mote-drift), -34px, 0); opacity: calc(var(--xiao-mote-opacity) * 0.2); }
+  0% { transform: translate3d(0, 0, 0); opacity: calc(var(--xiao-mote-opacity) * 0.15); }
+  50% { transform: translate3d(calc(var(--xiao-mote-drift) * 0.5), -54px, 0); opacity: min(1, calc(var(--xiao-mote-opacity) * 2)); }
+  100% { transform: translate3d(var(--xiao-mote-drift), -102px, 0); opacity: 0; }
 }
 
 @keyframes xiao-panel-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; translate: 0 15px; scale: 0.92; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
 }
 
 @keyframes xiao-nav-pulse {
-  0% { box-shadow: inset 2px 0 0 0 var(--dsw-alias-brand-primary, #35c4a6); }
-  100% { box-shadow: inset 2px 0 0 0 transparent; }
+  0% { box-shadow: inset 6px 0 0 0 var(--dsw-alias-brand-primary, #35c4a6); }
+  100% { box-shadow: inset 6px 0 0 0 transparent; }
 }
 
 /* --- lifecycle gates ----------------------------------------------------- */
 
 .xiao-overlay[data-hidden='true'] *,
-.xiao-overlay[data-reduced='true'] .xiao-mote,
-.xiao-overlay[data-reduced='true'] .xiao-live-preview__companion {
+.xiao-overlay[data-reduced='true'] .xiao-mote {
   animation-play-state: paused;
 }
 
@@ -1378,7 +1375,7 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
   }
 
   .xiao-ornament--nuo {
-    opacity: 0.06;
+    opacity: 0.18;
   }
 
   .xiao-glow--violet {
@@ -1407,12 +1404,12 @@ body:has([data-phase='hero']) [data-phase='hero'] [class$='_composerHero'] {
   }
 
   .xiao-live-preview {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(112px, 36%);
+    gap: 8px;
+    padding: 10px;
   }
 
-  .xiao-live-preview__stage {
-    display: none;
-  }
+  .xiao-live-preview__stage { height: 128px; }
 }
 
 @media (max-height: 720px) {

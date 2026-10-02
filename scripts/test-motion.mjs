@@ -56,7 +56,7 @@ equal(ripplePoolSlot(7), 1, "the pool advances one slot per burst");
 equal(ripplePoolSlot(-1), 5, "a negative sequence wraps safely");
 const fragment = rippleFragmentMotion(2);
 equal(fragment, rippleFragmentMotion(2), "fragment motion is deterministic");
-check(fragment.distance >= 20 && fragment.distance <= 32, "fragments stay inside the bounded radius");
+check(fragment.distance >= 60 && fragment.distance <= 96, "tripled fragments stay inside the expanded bounded radius");
 check(rippleFragmentMotion(7).angle > rippleFragmentMotion(0).angle, "fragments are distributed around the burst");
 
 // --- overlay points ---------------------------------------------------------
@@ -67,7 +67,7 @@ equal(toOverlayPoint(Number.NaN, 10, rect), null, "non-finite points are rejecte
 equal(toOverlayPoint(10, 10, null), null, "a missing rect is rejected");
 
 // --- parallax ---------------------------------------------------------------
-equal(XIAO_PARALLAX_MAX_PX, 3.5, "parallax is capped at 3.5 px");
+equal(XIAO_PARALLAX_MAX_PX, 10.5, "parallax is capped at three times the original 3.5 px");
 const centre = xiaoParallaxOffset(610, 420, rect);
 close(centre.x, 0, 0.001, "the viewport centre is neutral");
 const corner = xiaoParallaxOffset(1210, 820, rect);

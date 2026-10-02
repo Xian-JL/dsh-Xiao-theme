@@ -8,14 +8,14 @@
 export const XIAO_RIPPLE_POOL_SIZE = 6;
 export const XIAO_RIPPLE_FRAGMENT_COUNT = 8;
 export const XIAO_RIPPLE_DURATION_MS = 260;
-export const XIAO_RIPPLE_RADIUS_PX = 82;
+export const XIAO_RIPPLE_RADIUS_PX = 246;
 
 /** Deterministic per-fragment motion: no timers, no randomness. */
 export function rippleFragmentMotion(index, count = XIAO_RIPPLE_FRAGMENT_COUNT) {
 	const step = 360 / Math.max(1, count);
 	return {
 		angle: index * step + (index % 2 === 0 ? 6 : -8),
-		distance: 20 + (index % 3) * 6,
+		distance: 60 + (index % 3) * 18,
 		delay: (index % 4) * 8
 	};
 }

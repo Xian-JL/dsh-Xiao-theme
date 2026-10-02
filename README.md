@@ -1,6 +1,6 @@
 # Xiao · Vigil of the Azure Sky (dsh-xiao-theme)
 
-An independent character theme plugin for DeepSeek Harness (Web and Desktop). It rebuilds the interface hierarchy in **jade, ink-teal and moon-white**, and adds a full light and dark theme, a continuous welcome-to-conversation illustration transition, a draggable Xiao companion, wind traces and ambient motes, an optional official DeepSeek balance readout, and atomic settings with one-click reset.
+An independent character theme plugin for DeepSeek Harness (Web and Desktop). It rebuilds the interface hierarchy in **jade, ink-teal and moon-white**, offers a choice of two character artworks in the same welcome/conversation slot, and adds a draggable Xiao companion, amplified wind traces and ambient motes, and optional official DeepSeek balance monitoring.
 
 > All interface copy is original theme copy and is not presented as official character dialogue. Character artwork sources and licensing notes are in [THIRD_PARTY_ASSETS.md](THIRD_PARTY_ASSETS.md).
 
@@ -8,17 +8,17 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 
 - **Complete light and dark themes** built from roughly 80 semantic tokens. Light/dark follows DSH; the "minimal / balanced / immersive" presets only change decoration strength.
 - **One visual language** across the sidebar brand, welcome page, conversation page and settings.
-- **Continuous character transition**: the welcome and conversation pages share one illustration node, with a 700 ms reversible, interruptible transform and opacity transition.
+- **Two character artworks**: choose the standing illustration or birthday artwork; the selected image shares one welcome/conversation slot and its reversible, interruptible 700 ms transition.
 - **Xiao companion**: idle float, hover, click-to-open status panel, drag with saved position, arrow-key movement (Shift to accelerate, Home to reset), and a temporary welcome-page dock that never overwrites the user's position.
 - **Truthful session feedback**: sending, running, completed, ended, failed, stopped, unknown and awaiting-input, isolated per `sessionId` so background sessions cannot repaint the main view.
 - **Optional official balance**: off by default. When enabled the Host reads `https://api.deepseek.com/user/balance`; the API key never reaches the client. Below CNY 10 the companion shows a local warning only.
-- **Motion system**: click wind traces (fixed node pool), capped ambient motes, breathing, a running status ring, a single completion flourish, and immersive-only parallax.
+- **Amplified motion system**: breathing, companion reactions, click wind traces, ambient motes and immersive parallax use three times their original amplitude, with bounded effects and reduced-motion support.
 - **Durable settings**: serialized writes, visible failure feedback, position reset and full reset; disabling the plugin releases styles, listeners and timers.
 
 ## Install
 
 ```powershell
-dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.0.0.tgz"
+dsh plugin --profile web add "E:\Codex_workspace\dsh-Xiao-theme\dsh-xiao-theme-1.1.0.tgz"
 dsh web
 ```
 
@@ -40,7 +40,7 @@ Then open **Settings → General → Xiao theme**. The theme is enabled by defau
 | Group | Settings |
 | --- | --- |
 | Theme | Enable the Xiao theme |
-| Visual intensity | Presentation (minimal / balanced / immersive), conversation visibility, conversation position, character visibility, breathing, welcome parallax |
+| Visual intensity | Presentation (minimal / balanced / immersive), main illustration choice, conversation visibility and position, character visibility, breathing, welcome parallax |
 | Xiao companion | Show companion, size, horizontal direction, idle animation, reset position |
 | Session feedback | Converge decoration while running |
 | Environment | Background ornament, ambient particles, click wind trace |

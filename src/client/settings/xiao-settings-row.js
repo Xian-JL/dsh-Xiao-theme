@@ -4,10 +4,11 @@ import {
 	VISUAL_INTENSITIES,
 	CHARACTER_OPACITIES,
 	CHARACTER_POSITIONS,
+	CHARACTER_VARIANTS,
 	COMPANION_SIZES,
 	XIAO_VISUAL_PRESETS
 } from "../../shared/settings.js";
-import { XIAO_CELEBRATION_DATA_URI, XIAO_COMPANION_MARK_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.generated.js";
+import { XIAO_CELEBRATION_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.generated.js";
 import { PLUGIN_VERSION } from "../version.generated.js";
 import { useXiaoSettings } from "../hooks/use-xiao-settings.js";
 import { writeXiaoSettings } from "./write.js";
@@ -18,22 +19,27 @@ function ThemePreview({ t, value }) {
 	return h("div", {
 		className: "xiao-live-preview",
 		"data-character": String(value.showHero),
-		"data-companion": String(value.showCompanion),
 		"data-intensity": value.intensity,
 		"data-ornament": String(value.showOrnament),
 		"data-position": value.characterPosition,
-		"data-opacity": value.characterOpacity
+		"data-opacity": value.characterOpacity,
+		"data-variant": value.characterVariant
 	}, [
 		h("div", { key: "copy", className: "xiao-live-preview__copy" }, [
 			h("span", { key: "eyebrow", className: "xiao-live-preview__eyebrow" }, t("preview.eyebrow")),
 			h("strong", { key: "title" }, t("title")),
+			h("span", { key: "variant" }, t(`hero.variant.${value.characterVariant}`)),
 			h("span", { key: "tagline" }, t(`intensity.preset.${value.intensity}`))
 		]),
 		h("div", { key: "stage", className: "xiao-live-preview__stage" }, [
 			h("span", { key: "glow", className: "xiao-live-preview__glow" }),
 			h("span", { key: "wind", className: "xiao-live-preview__wind" }),
-			h("img", { alt: "", className: "xiao-live-preview__hero", key: "hero", src: XIAO_STANDING_DATA_URI }),
-			h("img", { alt: "", className: "xiao-live-preview__companion", key: "companion", src: XIAO_COMPANION_MARK_DATA_URI })
+			h("img", {
+				alt: "",
+				className: "xiao-live-preview__hero",
+				key: "hero",
+				src: value.characterVariant === "celebration" ? XIAO_CELEBRATION_DATA_URI : XIAO_STANDING_DATA_URI
+			})
 		])
 	]);
 }
@@ -200,6 +206,17 @@ export function XiaoSettingsRow({ settings, t }) {
 					value: item
 				})),
 				value: value.intensity
+			}),
+			h(ChoiceGroup, {
+				disabled,
+				key: "variant",
+				label: t("hero.variant"),
+				onChange: next => update("characterVariant", next),
+				options: CHARACTER_VARIANTS.map(item => ({
+					label: t(`hero.variant.${item}`),
+					value: item
+				})),
+				value: value.characterVariant
 			}),
 			h(ChoiceGroup, {
 				disabled,

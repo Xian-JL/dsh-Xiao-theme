@@ -1,6 +1,6 @@
 import { createElement as h, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { DEFAULT_XIAO_SETTINGS } from "../../shared/settings.js";
-import { XIAO_COMPANION_DATA_URI, XIAO_NUO_MASK_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.generated.js";
+import { XIAO_CELEBRATION_DATA_URI, XIAO_COMPANION_DATA_URI, XIAO_NUO_MASK_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.generated.js";
 import { useXiaoSettings } from "../hooks/use-xiao-settings.js";
 import { getXiaoThemeTokens, XIAO_THEME_SOURCE } from "../theme/tokens.js";
 import { getXiaoSessionState, subscribeXiaoSessionState } from "../session/status-store.js";
@@ -479,8 +479,13 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 				key: "hero-frame",
 				"data-position": value.characterPosition,
 				"data-opacity": value.characterOpacity,
+				"data-variant": value.characterVariant,
 				"data-animate": String(value.animateCharacter)
-			}, h("img", { alt: "", className: "xiao-hero", src: XIAO_STANDING_DATA_URI }))
+			}, h("img", {
+				alt: "",
+				className: "xiao-hero",
+				src: value.characterVariant === "celebration" ? XIAO_CELEBRATION_DATA_URI : XIAO_STANDING_DATA_URI
+			}))
 		]),
 
 		value.showCompanion ? h("div", {

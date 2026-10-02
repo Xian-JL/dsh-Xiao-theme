@@ -14,6 +14,8 @@ export const VISUAL_INTENSITIES = Object.freeze(["minimal", "balanced", "immersi
 export const CHARACTER_POSITIONS = Object.freeze(["corner", "edge"]);
 /** How present the conversation-page illustration is. */
 export const CHARACTER_OPACITIES = Object.freeze(["low", "medium", "high"]);
+/** Which of the two user-supplied artworks fills the primary illustration slot. */
+export const CHARACTER_VARIANTS = Object.freeze(["standing", "celebration"]);
 /** Companion footprint. */
 export const COMPANION_SIZES = Object.freeze(["sm", "md", "lg"]);
 
@@ -25,6 +27,7 @@ export const XIAO_SETTING_DEFINITIONS = Object.freeze({
 	enabled: Object.freeze({ kind: "boolean", default: true }),
 	intensity: Object.freeze({ kind: "choice", default: "balanced", options: VISUAL_INTENSITIES }),
 	showHero: Object.freeze({ kind: "boolean", default: true }),
+	characterVariant: Object.freeze({ kind: "choice", default: "standing", options: CHARACTER_VARIANTS }),
 	characterPosition: Object.freeze({ kind: "choice", default: "edge", options: CHARACTER_POSITIONS }),
 	characterOpacity: Object.freeze({ kind: "choice", default: "medium", options: CHARACTER_OPACITIES }),
 	animateCharacter: Object.freeze({ kind: "boolean", default: true }),

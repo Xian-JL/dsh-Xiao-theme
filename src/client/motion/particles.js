@@ -27,10 +27,10 @@ export function xiaoParticleStyle(index, count) {
 	const golden = 0.61803398875;
 	const left = ((index * golden) % 1) * 100;
 	const top = 8 + ((index * 0.377 + 0.13) % 1) * 78;
-	const size = 2 + (index % 3);
+	const size = (2 + (index % 3)) * 3;
 	const duration = 14 + ((index * 5) % 13);
 	const delay = -((index * 3.7) % duration);
-	const drift = (index % 2 === 0 ? 1 : -1) * (10 + (index % 5) * 6);
+	const drift = (index % 2 === 0 ? 1 : -1) * (10 + (index % 5) * 6) * 3;
 	return {
 		"--xiao-mote-delay": `${delay.toFixed(2)}s`,
 		"--xiao-mote-drift": `${drift}px`,

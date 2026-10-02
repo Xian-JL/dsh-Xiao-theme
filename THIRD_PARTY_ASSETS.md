@@ -46,9 +46,9 @@
 | 用途 | 背景纹饰（傩面装饰层） |
 | 来源 | [原神角色立绘展示网站](https://dimengke.github.io/yuanshenlihui/)（由用户提供；页面标注数据来源为米游社） |
 | 作者信息 | 未随文件提供；发布前由发布者核对 |
-| 处理方式 | 仅取右侧完整傩面局部（x 430–790，y 0–400）→ 1.5× Lanczos → UnsharpMask(1.2, 70%, 3) → 椭圆 α 渐隐（fade 0.2）→ 画布下延 60 px 并对底部 120 px 渐隐 |
+| 处理方式 | 仅取右侧完整傩面局部（x 430–790，y 0–400）→ 1.5× Lanczos → 对比度 1.24×、饱和度 1.12×、UnsharpMask(1.8, 155%, 2) → 椭圆 α 渐隐（fade 0.14）→ 画布下延 60 px 并对底部 120 px 渐隐；界面提升到 0.3 不透明度 |
 | 补绘说明 | 源图裁切处傩面下缘不完整。**未虚构补画轮廓**，而是以透明渐隐收边，使裁切读作有意的装饰处理 |
-| 最终资产 | `assets/ornaments/nuo-mask-mark.webp`（540×660，约 22 KB，透明占比 29.7%） |
+| 最终资产 | `assets/ornaments/nuo-mask-mark.webp`（540×660，约 48 KB，透明占比约 29%） |
 | 署名 | 界面内不标注；随包 `README` 与本源文件说明 |
 
 ### 2.4 `Birthday_celebration.jpg`
@@ -56,7 +56,7 @@
 | 字段 | 内容 |
 | --- | --- |
 | 原文件 | `assets/source/Birthday_celebration.jpg`（600×600，JPEG，111,669 字节） |
-| 用途 | 设置页主题介绍卡片（Settings → General → 魈主题 头部横幅） |
+| 用途 | 设置页主题介绍卡片（Settings → General → 魈主题 头部横幅）与主立绘选项二「生日贺图」；和 `xiao-standing.webp` 共用欢迎页/会话页立绘位置 |
 | 来源 | [原神角色立绘展示网站](https://dimengke.github.io/yuanshenlihui/)（由用户提供；页面标注数据来源为米游社） |
 | 作者信息 | 未随文件提供；发布前由发布者核对 |
 | 处理方式 | 保留完整插画构图；等比降至 540×540；WebP q82。不做去背景、不做裁剪 |

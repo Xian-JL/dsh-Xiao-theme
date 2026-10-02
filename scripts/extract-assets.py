@@ -15,7 +15,7 @@ from collections import deque
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageEnhance, ImageFilter
 
 ROOT = Path(__file__).resolve().parent.parent
 SOURCE_DIR = ROOT / "assets" / "source"
@@ -186,12 +186,14 @@ def build_nuo_mask() -> None:
     # The only complete mask in the source sits in the right third of the banner.
     crop = img.crop((430, 0, 790, 400))
     crop = crop.resize((round(crop.width * 1.5), round(crop.height * 1.5)), Image.LANCZOS)
-    crop = crop.filter(ImageFilter.UnsharpMask(radius=1.2, percent=70, threshold=3))
-    crop = elliptical_vignette(crop, fade=0.2)
+    crop = ImageEnhance.Contrast(crop).enhance(1.24)
+    crop = ImageEnhance.Color(crop).enhance(1.12)
+    crop = crop.filter(ImageFilter.UnsharpMask(radius=1.8, percent=155, threshold=2))
+    crop = elliptical_vignette(crop, fade=0.14)
     padded = Image.new("RGBA", (crop.width, crop.height + 60), (0, 0, 0, 0))
     padded.paste(crop, (0, 0))
     faded = bottom_fade(padded, 120)
-    save_webp(faded, "ornaments/nuo-mask-mark.webp", quality=82)
+    save_webp(faded, "ornaments/nuo-mask-mark.webp", quality=90)
 
 
 def build_celebration() -> None:

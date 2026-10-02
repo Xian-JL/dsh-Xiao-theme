@@ -129,7 +129,7 @@ assert(client.includes("installInteractionBridge"), "Interaction bridge is not i
 
 // --- settings surface -------------------------------------------------------
 for (const field of [
-  "enabled", "intensity", "showHero", "characterPosition", "characterOpacity", "animateCharacter",
+  "enabled", "intensity", "showHero", "characterVariant", "characterPosition", "characterOpacity", "animateCharacter",
   "showCompanion", "animatedCompanion", "companionSize", "companionFlipped", "companionPosition",
   "showOrnament", "ambientMotion", "clickRipple", "heroParallax", "convergeWhileRunning", "balanceEnabled"
 ]) {
@@ -169,7 +169,7 @@ assert(rippleSource.includes("fragment.animate"), "Wind trace must use the Web A
 assert(!rippleSource.includes("setTimeout"), "Ripple rendering must not use timers");
 assert(particlesSource.includes("XIAO_PARTICLE_MAX"), "Particle cap missing");
 assert(particlesSource.includes("immersive: 28"), "Immersive particle cap must stay at 28");
-assert(parallaxSource.includes("XIAO_PARALLAX_MAX_PX = 3.5"), "Parallax must stay within 3.5 px");
+assert(parallaxSource.includes("XIAO_PARALLAX_MAX_PX = 10.5"), "Parallax must stay within the 3x 10.5 px cap");
 assert(stylesSource.includes("data-hidden"), "Hidden-page animation gate missing");
 assert(stylesSource.includes("prefers-reduced-motion"), "Reduced-motion styles missing");
 assert(stylesSource.includes("animation-play-state: paused"), "Hidden page must pause animation");
@@ -211,6 +211,6 @@ console.log("- namespace: every setting, slot, class and locale key is xiao-scop
 console.log("- settings: shared definitions + Host schema + backwards-compatible decode");
 console.log("- session: explicit completion signal, neutral ended fallback, sessionId isolation");
 console.log("- companion: drag, keyboard, dock/restore, accessible panel");
-console.log("- motion: fixed ripple pool, capped particles, <=3.5 px parallax, hidden-page pause");
+console.log("- motion: fixed ripple pool, capped particles, <=10.5 px parallax, hidden-page pause");
 console.log("- balance: Host-only credential use, CNY 10 local warning, no global recolour");
 console.log("- assets: five inlined local images, no remote fetch");

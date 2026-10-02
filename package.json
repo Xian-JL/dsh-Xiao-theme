@@ -1,7 +1,7 @@
 {
   "name": "dsh-xiao-theme",
-  "version": "1.0.0",
-  "description": "Xiao \u00b7 Vigil of the Azure Sky: an independent DeepSeek Harness theme with light and dark palettes, a continuous hero-to-conversation character transition, a draggable Xiao companion, ambient Yaksha motion, and optional official DeepSeek balance monitoring.",
+  "version": "1.1.0",
+  "description": "Xiao \u00b7 Vigil of the Azure Sky: selectable character artworks, amplified motion, a draggable Xiao companion, and optional official DeepSeek balance monitoring.",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
   "main": "lib/index.js",
@@ -20,7 +20,8 @@
     "THIRD_PARTY_ASSETS.md",
     "docs/DESIGN_AND_MOTION.md",
     "docs/COMPATIBILITY.md",
-    "docs/VALIDATION.md"
+    "docs/VALIDATION.md",
+    "docs/V2_OPTIMIZATION.md"
   ],
   "dsh": {
     "manifestVersion": 1,

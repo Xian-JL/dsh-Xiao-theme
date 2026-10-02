@@ -1,5 +1,5 @@
 /** Maximum welcome-page parallax displacement, in CSS pixels. */
-export const XIAO_PARALLAX_MAX_PX = 3.5;
+export const XIAO_PARALLAX_MAX_PX = 10.5;
 
 const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
