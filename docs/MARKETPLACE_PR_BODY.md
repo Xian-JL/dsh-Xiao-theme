@@ -18,6 +18,7 @@ dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/
 - `npm run verify` passes with 300 assertions.
 - The author has completed local Desktop acceptance on DSH `0.2.0-rc.2`.
 - The submission adds only `data/plugins/Xian-JL__dsh-Xiao-theme.yml` under `theme` and leaves existing entries unchanged.
+- Entry-schema validation, generated README checks, awesome-lint with upstream repository context, 18 upstream tests, and the CI-mode site build pass locally.
 - Character-art sources and processing are documented in `THIRD_PARTY_ASSETS.md`; the code license excludes third-party art.
 
 ## Checklist

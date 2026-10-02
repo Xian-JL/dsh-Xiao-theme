@@ -102,7 +102,8 @@ tarball: https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-
 - 仓库描述和 `dsh-plugin` topic 已设置。
 - v1.1.3 已增加 `dsh-xiao-theme-latest.tgz` 和 `SHA256SUMS.txt`。固定版本包与 latest 包的 SHA-256 均为 `e4a5e7fcaace4aa8c06680f11d00619f08d71e85461c59ced58ad386b2cc8ac7`。
 - 当前仓库仍私有，公开转换等待仓库所有者确认，尚未创建市场 PR。
-- README 生成校验通过。Windows 上运行 awesome-lint 时需显式使用相对路径：`npx awesome-lint README.md`；不带路径会把 Windows 盘符误认为 URL。
-- 本地站点验证使用上游 PR workflow 的 `SKIP_PUBLISH_CHECKS=1`，用于不发布站点的 CI 预览；它不会改动市场线上发布规则。
+- README 生成校验通过。Windows 上运行 awesome-lint 时需显式使用相对路径，默认 Windows 盘符会被误认为 URL；本轮使用 awesome-lint 官方 API，传入 `README.md` 与上游仓库 URL，以避免用户 fork 缺少上游 `awesome` / `awesome-list` topic 造成的错误上下文。结果退出码 0，97 条既有警告，魈新增行无警告或错误。
+- 上游 PR workflow 的日期、能力披露、讨论关联三个测试文件全部通过，共 18 项测试。
+- 本地站点验证使用上游 PR workflow 的 `SKIP_PUBLISH_CHECKS=1`，用于不发布站点的 CI 预览；它不会改动市场线上发布规则。构建通过，4413 条目 × 2 语言及 sitemap、数量 badge 生成成功。
 
 PR 链接、公开状态、CI 与评审结果在实际完成后补充，不能将“已准备”当作“已提交”或“已合并”。
