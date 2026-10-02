@@ -1,0 +1,7 @@
+# Bundle row for dsh-xiao-theme.
+# The Host entry registers the optional settings section and the authenticated
+# DeepSeek balance route; the Client entry owns the theme, scene, companion and
+# motion layers. Both are released together with this patch.
+- insert:
+    - id: dsh-xiao-theme
+      name: dsh-xiao-theme

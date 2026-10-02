@@ -1,0 +1,7 @@
+node_modules/
+*.tgz
+*.log
+.DS_Store
+Thumbs.db
+# Processed character assets are committed on purpose; the untouched source
+# images stay outside the published package through the files whitelist.
