@@ -84,6 +84,7 @@ tarball: https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-
 - CI 检查提交数量、YAML 格式、`dsh.bundle`、仓库年龄以及 README/站点构建。
 - 仓库必须创建满 1 天。本轮最早达标时间为 2026-10-03 13:52:28（北京时间）。
 - 当前 gate 用实际检查时间计算年龄；仅年龄不达标时，上游会定期重检，无需制造空提交、关闭或重复创建 PR。
+- 当前 `regate.yml` 每 6 小时在 UTC 的第 19 分钟调度，年龄失败重检有约 24 小时冷却，因此仓库满一天和红色检查消失不是同一时刻。达标后仍可能等待下一轮调度及队列。
 - CI 通过后仍由维护者阅读源码、核对描述和决定是否合并。
 - 需要修改时，在同一分支提交修正，PR 自动更新。
 - 合并后市场目录和站点自动重建；客户端目录同步可能有延迟。检查公开条目、主题分类、安装链接和所展示版本，再确认收录完成。
@@ -102,7 +103,7 @@ tarball: https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-
 - 仓库描述和 `dsh-plugin` topic 已设置。
 - v1.1.3 已增加 `dsh-xiao-theme-latest.tgz` 和 `SHA256SUMS.txt`。固定版本包与 latest 包的 SHA-256 均为 `e4a5e7fcaace4aa8c06680f11d00619f08d71e85461c59ced58ad386b2cc8ac7`。
 - 仓库所有者已改为公开；匿名读取 `package.json` 和下载 latest tgz 均成功，下载 SHA-256 与固定版本一致。
-- 上游首轮 `PR check` 已启动。仓库年龄门槛仍待 2026-10-03 13:52:28（北京时间）达标，最终 CI 和维护者评审以 PR 页面为准。
+- 上游首轮 `PR check` 已全部通过（8 分 8 秒）。唯一失败项为 `Submission gate` 的仓库年龄：当前约 0.3 天，要求 1 天；官方检查明确说明仅年龄不达标。仓库门槛于 2026-10-03 13:52:28（北京时间）达标，重检时间还受定时调度和冷却影响；最终 CI 和维护者评审以 PR 页面为准。
 - README 生成校验通过。Windows 上运行 awesome-lint 时需显式使用相对路径，默认 Windows 盘符会被误认为 URL；本轮使用 awesome-lint 官方 API，传入 `README.md` 与上游仓库 URL，以避免用户 fork 缺少上游 `awesome` / `awesome-list` topic 造成的错误上下文。结果退出码 0，97 条既有警告，魈新增行无警告或错误。
 - 上游 PR workflow 的日期、能力披露、讨论关联三个测试文件全部通过，共 18 项测试。
 - 本地站点验证使用上游 PR workflow 的 `SKIP_PUBLISH_CHECKS=1`，用于不发布站点的 CI 预览；它不会改动市场线上发布规则。构建通过，4413 条目 × 2 语言及 sitemap、数量 badge 生成成功。
