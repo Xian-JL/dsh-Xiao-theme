@@ -101,11 +101,12 @@ tarball: https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-
 - 分支已推送至用户 fork，并已提交 [PR #6404 — Add dsh-Xiao-theme](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/6404)。PR 为 Open，非 draft；实际 diff 只新增一个 YAML，共 7 行。
 - 目录解析校验通过：4413 条记录，魈条目恰好 1 条，字段校验错误为 0。
 - 仓库描述和 `dsh-plugin` topic 已设置。
-- v1.1.3 已增加 `dsh-xiao-theme-latest.tgz` 和 `SHA256SUMS.txt`。固定版本包与 latest 包的 SHA-256 均为 `e4a5e7fcaace4aa8c06680f11d00619f08d71e85461c59ced58ad386b2cc8ac7`。
+- v1.1.3 曾增加 `dsh-xiao-theme-latest.tgz` 和 `SHA256SUMS.txt`，对应摘要保留作历史记录。
+- v1.2.0 发布于 GitHub Release，固定版本与 latest 包匿名下载通过；SHA-256 均为 `559989234c1b6118a902b75a03452d23af41826fe8bccff4eb52f3638a700acd`。既有 PR 的 `tarball` 字段仍使用 `releases/latest`，无需另开市场 PR。
 - 仓库所有者已改为公开；匿名读取 `package.json` 和下载 latest tgz 均成功，下载 SHA-256 与固定版本一致。
 - 上游首轮 `PR check` 已全部通过（8 分 8 秒）。首轮 `Submission gate` 因仓库年龄不足失败；一日门槛已于 2026-10-03 13:52:28（北京时间）达标。根据用户要求，已更新 PR 验收说明并将空变更提交 `1754649386e2269af27170a0d5380a86d6e91ff0` 推送至原分支以触发新一轮自动检查。新一轮 `PR check` 于 2026-10-03 08:08 UTC 用时 8 分 4 秒通过，`Submission gate` 随后通过；PR 仍等待维护者审核和合并。
 - README 生成校验通过。Windows 上运行 awesome-lint 时需显式使用相对路径，默认 Windows 盘符会被误认为 URL；本轮使用 awesome-lint 官方 API，传入 `README.md` 与上游仓库 URL，以避免用户 fork 缺少上游 `awesome` / `awesome-list` topic 造成的错误上下文。结果退出码 0，97 条既有警告，魈新增行无警告或错误。
 - 上游 PR workflow 的日期、能力披露、讨论关联三个测试文件全部通过，共 18 项测试。
 - 本地站点验证使用上游 PR workflow 的 `SKIP_PUBLISH_CHECKS=1`，用于不发布站点的 CI 预览；它不会改动市场线上发布规则。构建通过，4413 条目 × 2 语言及 sitemap、数量 badge 生成成功。
 
-PR 链接、公开状态、CI 与评审结果在实际完成后补充，不能将“已准备”当作“已提交”或“已合并”。
+截至 2026-10-08，PR #6404 仍为 Open；其唯一条目继续指向 `releases/latest`，因此 v1.2.0 发布不需要新建市场 PR。代码仓库 Release 已公开，市场条目合并仍等待维护者审核。

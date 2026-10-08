@@ -119,4 +119,4 @@ npm pack            # 产出可安装 tgz
 
 - `npm run verify`：构建、契约检查和全部测试套件通过。新增背景测试覆盖 PNG/JPEG/WebP 文件约束、40MP 与 15MiB 上限、WebP 输出边界、旧 Profile 默认值恢复、非远程图片验证、亮色/深色强调色对比度，以及背景表面 0%、75%、100% 可见度透明度。
 - 使用 DSH Desktop 所带 CLI `0.2.0-rc.2` 将固定版本候选包安装至独立临时 Profile；`plugin list` 确认 `dsh-xiao-theme@1.2.0`，安装后的预构建 Client 包含 `settings.section`、`backgroundVisibility` 与本地图片处理逻辑，且不再注册 `settings.general.item`。
-- 本轮没有启动 Web 端，也没有把包安装到用户的正式 Desktop Profile 或重新启动 DSH Desktop 做视觉检查；固定/latest Release 资产及摘要记录在 `docs/RELEASE_1.2.0.md`，桌面视觉效果由用户启动后验收。
+- 本轮没有启动 Web 端，也没有把包安装到用户的正式 Desktop Profile 或重新启动 DSH Desktop 做视觉检查；GitHub Release `v1.2.0` 的固定/latest tarball 已匿名下载，SHA-256 均为 `559989234c1b6118a902b75a03452d23af41826fe8bccff4eb52f3638a700acd`。桌面视觉效果由用户启动后验收。

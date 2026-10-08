@@ -2,10 +2,10 @@
 
 - Repository: https://github.com/Xian-JL/dsh-Xiao-theme
 - Category: `theme`
-- Package: `dsh-xiao-theme`, current release `v1.1.3`
+- Package: `dsh-xiao-theme`, current release `v1.2.0`
 - Distribution: prebuilt GitHub Release tarball; no npm publication
 
-Xiao character theme for DeepSeek Harness Web and Desktop with light/dark palettes, selectable character illustrations, a draggable companion, session-state feedback, and optional official DeepSeek balance display. This is a separate Xiao theme from the existing Kinich entry.
+Xiao character theme for DeepSeek Harness with light/dark palettes, selectable character illustrations, a draggable companion, session-state feedback, optional official DeepSeek balance display, and profile-local custom backgrounds with an adjustable visibility control. Xiao's complete preferences have a dedicated Settings section. This is a separate Xiao theme from the existing Kinich entry.
 
 ## Installation
 
@@ -15,7 +15,7 @@ dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/
 
 ## Validation
 
-- `npm run verify` passes with 300 assertions.
+- `npm run verify` passes, including the 1.2.0 background, palette, and settings-section coverage.
 - The author has completed local Desktop acceptance on DSH `0.2.0-rc.2`.
 - The submission adds only `data/plugins/Xian-JL__dsh-Xiao-theme.yml` under `theme` and leaves existing entries unchanged.
 - Entry-schema validation, generated README checks, awesome-lint with upstream repository context, 18 upstream tests, and the CI-mode site build pass locally.

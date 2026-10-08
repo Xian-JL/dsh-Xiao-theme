@@ -19,6 +19,7 @@ Xiao 1.2.0 adds a profile-local custom background and moves Xiao's full preferen
 ## Distribution
 
 - Version: `1.2.0`
-- Channel: GitHub Release, with a versioned tarball, a byte-identical `dsh-xiao-theme-latest.tgz`, and `SHA256SUMS.txt`.
+- Channel: GitHub Release `v1.2.0`, with a versioned tarball, a byte-identical `dsh-xiao-theme-latest.tgz`, and `SHA256SUMS.txt`.
 - This release is not published to npm.
 - SHA-256 for both tarballs: `559989234c1b6118a902b75a03452d23af41826fe8bccff4eb52f3638a700acd`.
+- Anonymous download from the public `releases/latest` URL returned the same SHA-256.
