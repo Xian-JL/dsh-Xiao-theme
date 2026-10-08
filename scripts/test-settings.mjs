@@ -23,6 +23,19 @@ equal(partial.showHero, DEFAULT_XIAO_SETTINGS.showHero, "missing fields fall bac
 const legacyShape = { enabled: true, intensity: "minimal" };
 equal(Object.keys(normalizeXiaoSettings(legacyShape)).length, Object.keys(XIAO_SETTING_DEFINITIONS).length,
 	"every defined field is produced for a legacy section");
+equal(DEFAULT_XIAO_SETTINGS.customBackgroundImage, "", "custom backgrounds default to no image");
+equal(DEFAULT_XIAO_SETTINGS.customBackgroundAccent, "", "custom background accent defaults empty");
+equal(DEFAULT_XIAO_SETTINGS.backgroundAutoPalette, true, "custom backgrounds default to automatic accent matching");
+equal(DEFAULT_XIAO_SETTINGS.backgroundVisibility, 75, "custom backgrounds default to clear visibility");
+equal(normalizeXiaoSettings(legacyShape).backgroundVisibility, 75, "older profiles receive the visibility default");
+equal(normalizeXiaoSettings({ intensity: "immersive", customBackgroundImage: "https://example.test/a.png" }).intensity,
+	"immersive", "invalid optional image data does not reset existing settings");
+equal(normalizeXiaoSettings({ backgroundVisibility: 101 }).backgroundVisibility, 75,
+	"an invalid optional visibility value recovers to its default");
+check(isXiaoSettingValue(XIAO_SETTING_DEFINITIONS.customBackgroundImage, "data:image/webp;base64,YWJj"),
+	"optimized WebP data URLs are accepted");
+check(!isXiaoSettingValue(XIAO_SETTING_DEFINITIONS.customBackgroundImage, "https://example.test/background.webp"),
+	"remote image URLs are not accepted");
 
 equal(normalizeXiaoSettings({ intensity: "chaotic" }), undefined, "an unknown choice value is rejected");
 equal(normalizeXiaoSettings({ companionPosition: { x: 400, y: 10 } }), undefined, "an out-of-range position is rejected");

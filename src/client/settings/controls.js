@@ -1,4 +1,4 @@
-import { createElement as h } from "react";
+import { createElement as h, useEffect, useRef, useState } from "react";
 
 /** Small, dependency-free control primitives for the Xiao settings section. */
 
@@ -55,4 +55,47 @@ export function ActionButton({ disabled, label, onClick, tone = "neutral" }) {
 		onClick,
 		type: "button"
 	}, label);
+}
+
+export function RangeControl({ disabled, label, max, min, onCommit, step = 1, suffix = "", value }) {
+	const [draft, setDraft] = useState(value);
+	const committedRef = useRef(value);
+	const keyboardTimer = useRef(null);
+	useEffect(() => {
+		setDraft(value);
+		committedRef.current = value;
+	}, [value]);
+	useEffect(() => () => {
+		if (keyboardTimer.current !== null) clearTimeout(keyboardTimer.current);
+	}, []);
+	const commit = () => {
+		if (keyboardTimer.current !== null) { clearTimeout(keyboardTimer.current); keyboardTimer.current = null; }
+		if (draft === committedRef.current) return;
+		committedRef.current = draft;
+		onCommit(draft);
+	};
+	const scheduleKeyboardCommit = event => {
+		if (!/^(?:Arrow(?:Left|Right|Up|Down)|Home|End|PageUp|PageDown)$/.test(event.key)) return;
+		if (keyboardTimer.current !== null) clearTimeout(keyboardTimer.current);
+		keyboardTimer.current = setTimeout(commit, 180);
+	};
+	return h("label", { className: "xiao-range" }, [
+		h("span", { className: "xiao-range__heading", key: "heading" }, [
+			h("span", { key: "label" }, label),
+			h("output", { key: "value" }, `${draft}${suffix}`)
+		]),
+		h("input", {
+			disabled,
+			key: "range",
+			max,
+			min,
+			onBlur: commit,
+			onChange: event => setDraft(Number(event.currentTarget.value)),
+			onKeyUp: scheduleKeyboardCommit,
+			onPointerUp: commit,
+			step,
+			type: "range",
+			value: draft
+		})
+	]);
 }

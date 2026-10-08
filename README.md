@@ -14,6 +14,7 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 - **Optional official balance**: off by default. When enabled the Host reads `https://api.deepseek.com/user/balance`; the API key never reaches the client. Below CNY 10 the companion shows a local warning only.
 - **Amplified motion system**: breathing, companion reactions, click wind traces, ambient motes and immersive parallax use three times their original amplitude, with bounded effects and reduced-motion support.
 - **Durable settings**: serialized writes, visible failure feedback, position reset and full reset; disabling the plugin releases styles, listeners and timers.
+- **Custom local background**: choose an image, tune its visibility, and optionally match Xiao's accent colors; settings stay in the active DSH Profile.
 
 ## Install
 
@@ -28,7 +29,7 @@ Remove:
 dsh plugin --profile web remove dsh-xiao-theme
 ```
 
-Then open **Settings → General → Xiao theme**. The theme is enabled by default; the balance readout is off by default.
+Then open **Settings → Xiao**. The theme is enabled by default; the balance readout is off by default.
 
 ## Coexistence with other character themes
 
@@ -37,6 +38,8 @@ Then open **Settings → General → Xiao theme**. The theme is enabled by defau
 
 ## Settings
 
+Open DSH **Settings → Xiao**. With a local background selected, the dedicated page can tune its visibility and optional accent matching.
+
 | Group | Settings |
 | --- | --- |
 | Theme | Enable the Xiao theme |
@@ -44,6 +47,7 @@ Then open **Settings → General → Xiao theme**. The theme is enabled by defau
 | Xiao companion | Show companion, size, horizontal direction, idle animation, reset position |
 | Session feedback | Converge decoration while running |
 | Environment | Background ornament, ambient particles, click wind trace |
+| Background | Local image, background visibility, automatic accent matching |
 | Official balance | Show the official DeepSeek balance |
 | Reset | Reset companion position, reset all settings (two-step confirm) |
 

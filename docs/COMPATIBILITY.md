@@ -46,7 +46,7 @@
 | `conversation.hero.brand.mark` | — | 欢迎页品牌标记 |
 | `conversation.composer.dock` | `xiao-session-state` | Session scope 的会话状态桥（不可见） |
 | `shell.overlay` | `xiao-theme-decoration` | 场景、立绘、伙伴、动效层 |
-| `settings.general.item` | `xiao-theme` | Settings → General 设置区 |
+| `settings.section` | `xiao-theme` | Settings → Xiao 独立设置页 |
 
 ## 3. 明确不依赖的接口
 

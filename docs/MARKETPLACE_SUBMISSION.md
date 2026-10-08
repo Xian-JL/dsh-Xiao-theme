@@ -8,10 +8,10 @@
 
 | 项目 | 状态 |
 | --- | --- |
-| 插件 | `dsh-xiao-theme@1.1.3` |
+| 插件 | `dsh-xiao-theme@1.2.0` |
 | 源码 | `https://github.com/Xian-JL/dsh-Xiao-theme`，已由所有者改为公开 |
-| Release | `v1.1.3`，已含预构建安装包 |
-| 验证 | 300 条断言通过；旧版风痕边框问题已在实际 Chromium 中复现并做修复对照；用户已完成 Desktop 验收 |
+| Release | `v1.2.0`，包含版本包和 latest 预构建安装包 |
+| 验证 | `npm run verify` 与 DSH Desktop CLI 隔离 Profile 安装通过；V1.1.3 风痕修复仍有既有 Desktop 验收记录 |
 | 分发 | GitHub Release，不发布 npm |
 | 仓库创建时间 | `2026-10-02T05:52:28Z`，北京时间 2026-10-02 13:52:28 |
 | 满 24 小时时间 | 北京时间 **2026-10-03 13:52:28** |
@@ -22,7 +22,7 @@
 
 ## 2. 分发准备
 
-1. 保留固定版本资产 `dsh-xiao-theme-1.1.3.tgz`。
+1. 保留固定版本资产 `dsh-xiao-theme-1.2.0.tgz`。
 2. 为同一 Release 增加字节完全相同的 `dsh-xiao-theme-latest.tgz`。
 3. 增加 `SHA256SUMS.txt`，记录固定版本和 latest 两个包的 SHA-256。
 4. 市场使用下列稳定链接：

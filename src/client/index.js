@@ -28,10 +28,11 @@ export function apply(ctx) {
 		locale: XIAO_LOCALE_NAMESPACE,
 		inject: () => ({ settings, theme: ctx.theme })
 	}, XiaoOverlay));
-	ctx.slots.inject("settings.general.item", () => ctx.slots.register({
-		name: "settings.general.item",
+	ctx.slots.inject("settings.section", () => ctx.slots.register({
+		name: "settings.section",
 		id: "xiao-theme",
-		order: 15,
+		order: 40,
+		label: () => "魈 · Xiao",
 		locale: XIAO_LOCALE_NAMESPACE,
 		inject: () => ({ settings })
 	}, XiaoSettingsRow));

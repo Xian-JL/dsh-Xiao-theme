@@ -114,3 +114,9 @@ npm pack            # 产出可安装 tgz
 根因是作者 `.xiao-wind-ripple { display: block }` 覆盖浏览器默认 `[hidden]` 规则；取消 Web Animations 后，动画透明度被移除，静态图形重新出现。V1.1.3 显式声明 `[hidden]` 不绘制，并将子图形设为默认透明。
 
 以上是实际浏览器的隔离回归，不代表已在 Electron Desktop 中重新完成外部窗口切换验收；更新后的 Desktop 由用户验收。
+
+## 8. V1.2.0 桌面包验证（2026-10-08）
+
+- `npm run verify`：构建、契约检查和全部测试套件通过。新增背景测试覆盖 PNG/JPEG/WebP 文件约束、40MP 与 15MiB 上限、WebP 输出边界、旧 Profile 默认值恢复、非远程图片验证、亮色/深色强调色对比度，以及背景表面 0%、75%、100% 可见度透明度。
+- 使用 DSH Desktop 所带 CLI `0.2.0-rc.2` 将固定版本候选包安装至独立临时 Profile；`plugin list` 确认 `dsh-xiao-theme@1.2.0`，安装后的预构建 Client 包含 `settings.section`、`backgroundVisibility` 与本地图片处理逻辑，且不再注册 `settings.general.item`。
+- 本轮没有启动 Web 端，也没有把包安装到用户的正式 Desktop Profile 或重新启动 DSH Desktop 做视觉检查；固定/latest Release 资产及摘要记录在 `docs/RELEASE_1.2.0.md`，桌面视觉效果由用户启动后验收。

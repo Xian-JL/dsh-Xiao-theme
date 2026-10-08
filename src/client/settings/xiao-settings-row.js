@@ -12,7 +12,8 @@ import { XIAO_CELEBRATION_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.gen
 import { PLUGIN_VERSION } from "../version.generated.js";
 import { useXiaoSettings } from "../hooks/use-xiao-settings.js";
 import { writeXiaoSettings } from "./write.js";
-import { ActionButton, ChoiceGroup, SectionHeader, Toggle } from "./controls.js";
+import { ActionButton, ChoiceGroup, RangeControl, SectionHeader, Toggle } from "./controls.js";
+import { normalizeXiaoBackgroundFile, XiaoBackgroundError } from "../background/image.js";
 
 /** A miniature of the real surface. It never moves the live companion. */
 function ThemePreview({ t, value }) {
@@ -23,7 +24,8 @@ function ThemePreview({ t, value }) {
 		"data-ornament": String(value.showOrnament),
 		"data-position": value.characterPosition,
 		"data-opacity": value.characterOpacity,
-		"data-variant": value.characterVariant
+		"data-variant": value.characterVariant,
+		"data-background": String(Boolean(value.customBackgroundImage))
 	}, [
 		h("div", { key: "copy", className: "xiao-live-preview__copy" }, [
 			h("span", { key: "eyebrow", className: "xiao-live-preview__eyebrow" }, t("preview.eyebrow")),
@@ -32,6 +34,12 @@ function ThemePreview({ t, value }) {
 			h("span", { key: "tagline" }, t(`intensity.preset.${value.intensity}`))
 		]),
 		h("div", { key: "stage", className: "xiao-live-preview__stage" }, [
+			value.customBackgroundImage ? h("img", {
+				alt: "",
+				className: "xiao-live-preview__background",
+				key: "background",
+				src: value.customBackgroundImage
+			}) : null,
 			h("span", { key: "glow", className: "xiao-live-preview__glow" }),
 			h("span", { key: "wind", className: "xiao-live-preview__wind" }),
 			h("img", {
@@ -77,7 +85,7 @@ const SIZE_LABEL_KEY = {
 };
 
 /**
- * Settings section rendered inside Settings → General.
+ * Complete Xiao settings page rendered in its own Settings section.
  *
  * Reads and writes go through the DSH settings scope only; the preview above is
  * a static miniature, so adjusting a switch never sends a message, queries the
@@ -90,6 +98,10 @@ export function XiaoSettingsRow({ settings, t }) {
 	const [failed, setFailed] = useState(null);
 	const [resetArmed, setResetArmed] = useState(false);
 	const [notice, setNotice] = useState(null);
+	const [backgroundProcessing, setBackgroundProcessing] = useState(false);
+	const [backgroundMessage, setBackgroundMessage] = useState("");
+	const [backgroundError, setBackgroundError] = useState("");
+	const backgroundInput = useRef(null);
 	const resetTimer = useRef(null);
 	const noticeTimer = useRef(null);
 	const writable = snapshot.writable !== false;
@@ -125,6 +137,27 @@ export function XiaoSettingsRow({ settings, t }) {
 	};
 	const update = (field, next) => updateMany(field, { [field]: next });
 	const applyPreset = intensity => updateMany("intensity", { ...XIAO_VISUAL_PRESETS[intensity] });
+	const handleBackgroundSelection = async event => {
+		const file = event.currentTarget.files?.[0];
+		event.currentTarget.value = "";
+		if (!file) return;
+		setBackgroundProcessing(true);
+		setBackgroundError("");
+		setBackgroundMessage("");
+		try {
+			const optimized = await normalizeXiaoBackgroundFile(file);
+			const saved = await updateMany(t("background.section"), {
+				customBackgroundImage: optimized.dataUrl,
+				customBackgroundAccent: optimized.accent ?? ""
+			});
+			if (saved) setBackgroundMessage(t("background.saved"));
+		} catch (error) {
+			const key = error instanceof XiaoBackgroundError ? `background.error.${error.code}` : "background.error.invalid-image";
+			setBackgroundError(t(key));
+		} finally {
+			setBackgroundProcessing(false);
+		}
+	};
 	const resetAll = () => {
 		if (!resetArmed) {
 			setResetArmed(true);
@@ -140,6 +173,7 @@ export function XiaoSettingsRow({ settings, t }) {
 	};
 
 	const disabled = !writable || pending !== null;
+	const backgroundDisabled = disabled || backgroundProcessing;
 	const stateLabel = active => t(active ? "state.on" : "state.off");
 	const busyLabel = pending === null ? null : `${t("state.saving")}${pending}`;
 
@@ -375,6 +409,70 @@ export function XiaoSettingsRow({ settings, t }) {
 				onChange: () => update("clickRipple", !value.clickRipple),
 				stateLabel: stateLabel(value.clickRipple)
 			})
+		]),
+
+		h(SettingSection, { key: "background", title: t("background.section"), description: t("background.description") }, [
+			value.customBackgroundImage && h("img", {
+				alt: "",
+				className: "xiao-background-control__preview",
+				key: "background-preview",
+				src: value.customBackgroundImage
+			}),
+			h("input", {
+				accept: "image/png,image/jpeg,image/webp",
+				className: "xiao-background-control__file",
+				disabled: backgroundDisabled,
+				key: "background-file",
+				onChange: handleBackgroundSelection,
+				ref: backgroundInput,
+				type: "file"
+			}),
+			h("div", { className: "xiao-settings__actions", key: "background-actions" }, [
+				h(ActionButton, {
+					disabled: backgroundDisabled,
+					key: "choose",
+					label: backgroundProcessing ? t("background.processing") : t(value.customBackgroundImage ? "background.replace" : "background.choose"),
+					onClick: () => backgroundInput.current?.click(),
+					tone: "accent"
+				}),
+				value.customBackgroundImage && h(ActionButton, {
+					disabled: backgroundDisabled,
+					key: "reset",
+					label: t("background.reset"),
+					onClick: async () => {
+						setBackgroundError("");
+						const saved = await updateMany(t("background.section"), {
+							customBackgroundImage: "",
+							customBackgroundAccent: "",
+							backgroundVisibility: DEFAULT_XIAO_SETTINGS.backgroundVisibility
+						});
+						if (saved) setBackgroundMessage(t("background.resetDone"));
+					}
+				})
+			]),
+			value.customBackgroundImage && h(RangeControl, {
+				disabled: backgroundDisabled,
+				key: "background-visibility",
+				label: t("background.visibility.label"),
+				max: 100,
+				min: 0,
+				onCommit: next => update("backgroundVisibility", next),
+				step: 5,
+				suffix: "%",
+				value: value.backgroundVisibility
+			}),
+			value.customBackgroundImage && h("p", { className: "xiao-background-control__hint", key: "visibility-description" }, t("background.visibility.description")),
+			h(Toggle, {
+				checked: value.backgroundAutoPalette,
+				description: t("background.autoPalette.description"),
+				disabled: backgroundDisabled || !value.customBackgroundImage,
+				key: "background-auto-palette",
+				label: t("background.autoPalette.label"),
+				onChange: () => update("backgroundAutoPalette", !value.backgroundAutoPalette),
+				stateLabel: stateLabel(value.backgroundAutoPalette)
+			}),
+			backgroundMessage && h("p", { className: "xiao-background-control__status", key: "background-message", role: "status" }, backgroundMessage),
+			backgroundError && h("p", { className: "xiao-background-control__error", key: "background-error", role: "alert" }, backgroundError)
 		]),
 
 		h(SettingSection, { key: "balance", title: t("balance.section"), description: t("balance.section.description") }, [

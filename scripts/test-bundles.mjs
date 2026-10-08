@@ -108,7 +108,7 @@ clientModule.apply(clientCtx);
 equal(slots.sort(), [
 	"conversation.composer.dock",
 	"conversation.hero.brand.mark",
-	"settings.general.item",
+	"settings.section",
 	"shell.overlay",
 	"sidebar.brand.mark",
 	"sidebar.brand.name"

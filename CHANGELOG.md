@@ -1,5 +1,12 @@
 # 更新记录
 
+## 1.2.0 — Custom backgrounds and dedicated settings
+
+- 增加本地背景图片设置，支持 PNG/JPEG/WebP，并在客户端缩放、转为限长 WebP 后保存在 DSH Profile；图片不上传。
+- 增加自动提取图片强调色和背景可见度滑条（0–100%，默认 75%），由主题表面透明度呈现图片，保持明暗模式与语义状态色。
+- 将完整魈主题设置从 General 列表迁移到独立的 Settings → Xiao 分区。
+- 保留已有动画、减少动态效果适配、会话状态、余额和素材来源记录。
+
 ## 1.1.3 — Hidden ripple fix and rounded birthday artwork
 
 - 修复 `.xiao-wind-ripple` 的 `display: block` 覆盖 `hidden` 状态的问题。隐藏的池节点明确不绘制，动画子图形默认透明，取消动画不会暴露静态边框。

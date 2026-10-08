@@ -18,6 +18,9 @@ export const CHARACTER_OPACITIES = Object.freeze(["low", "medium", "high"]);
 export const CHARACTER_VARIANTS = Object.freeze(["standing", "celebration"]);
 /** Companion footprint. */
 export const COMPANION_SIZES = Object.freeze(["sm", "md", "lg"]);
+export const MAX_BACKGROUND_DATA_URL_LENGTH = 512 * 1024;
+const BACKGROUND_DATA_URL_PATTERN = /^data:image\/webp;base64,[A-Za-z0-9+/]+={0,2}$/;
+const HEX_COLOR_PATTERN = /^#[0-9a-fA-F]{6}$/;
 
 /** Default free position of the companion, in overlay percentages. */
 export const XIAO_DEFAULT_COMPANION_POSITION = Object.freeze({ x: 92, y: 86 });
@@ -41,7 +44,17 @@ export const XIAO_SETTING_DEFINITIONS = Object.freeze({
 	clickRipple: Object.freeze({ kind: "boolean", default: true }),
 	heroParallax: Object.freeze({ kind: "boolean", default: true }),
 	convergeWhileRunning: Object.freeze({ kind: "boolean", default: true }),
-	balanceEnabled: Object.freeze({ kind: "boolean", default: false })
+	balanceEnabled: Object.freeze({ kind: "boolean", default: false }),
+	customBackgroundImage: Object.freeze({
+		kind: "string", default: "", maxLength: MAX_BACKGROUND_DATA_URL_LENGTH,
+		pattern: BACKGROUND_DATA_URL_PATTERN, recoverInvalid: true
+	}),
+	customBackgroundAccent: Object.freeze({
+		kind: "string", default: "", maxLength: 7,
+		pattern: HEX_COLOR_PATTERN, recoverInvalid: true
+	}),
+	backgroundAutoPalette: Object.freeze({ kind: "boolean", default: true }),
+	backgroundVisibility: Object.freeze({ kind: "number", default: 75, min: 0, max: 100, step: 5, recoverInvalid: true })
 });
 
 export const XIAO_SETTING_KEYS = Object.freeze(Object.keys(XIAO_SETTING_DEFINITIONS));
@@ -84,6 +97,8 @@ export function isXiaoSettingValue(definition, value) {
 		case "boolean": return typeof value === "boolean";
 		case "number": return isFiniteRange(value, definition.min, definition.max);
 		case "choice": return typeof value === "string" && definition.options.includes(value);
+		case "string": return typeof value === "string" && value.length <= definition.maxLength &&
+			(value === "" || definition.pattern.test(value));
 		case "position": return typeof value === "object" && value !== null &&
 			isFiniteRange(value.x, definition.min, definition.max) && isFiniteRange(value.y, definition.min, definition.max);
 		default: return false;
@@ -104,8 +119,11 @@ export function normalizeXiaoSettings(section) {
 	const source = typeof section === "object" && section !== null ? section : {};
 	const decoded = {};
 	for (const [key, definition] of Object.entries(XIAO_SETTING_DEFINITIONS)) {
-		const candidate = source[key] ?? DEFAULT_XIAO_SETTINGS[key];
-		if (!isXiaoSettingValue(definition, candidate)) return undefined;
+		let candidate = source[key] ?? DEFAULT_XIAO_SETTINGS[key];
+		if (!isXiaoSettingValue(definition, candidate)) {
+			if (!definition.recoverInvalid) return undefined;
+			candidate = DEFAULT_XIAO_SETTINGS[key];
+		}
 		decoded[key] = cloneXiaoSettingValue(definition, candidate);
 	}
 	return decoded;

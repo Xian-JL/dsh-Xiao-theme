@@ -44,6 +44,8 @@ const sourceFiles = [
   "src/client/styles.generated.js",
   "src/client/version.generated.js",
   "src/client/theme/tokens.js",
+  "src/client/background/image.js",
+  "src/client/background/palette.js",
   "src/client/components/brand.js",
   "src/client/hooks/use-xiao-settings.js",
   "src/client/scene/phase-model.js",
@@ -114,9 +116,10 @@ assert(balanceRouteSource.includes("credentialBindingId"), "Credential-bound cac
 assert(!/apiKey\s*[:=]\s*["']sk-/.test(`${host}${client}`), "A literal API key must never appear in a bundle");
 
 // --- client services and slots ---------------------------------------------
-for (const slot of ["sidebar.brand.mark", "sidebar.brand.name", "conversation.hero.brand.mark", "conversation.composer.dock", "shell.overlay", "settings.general.item"]) {
+for (const slot of ["sidebar.brand.mark", "sidebar.brand.name", "conversation.hero.brand.mark", "conversation.composer.dock", "shell.overlay", "settings.section"]) {
   assert(client.includes(`ctx.slots.inject(${JSON.stringify(slot)}`), `Required slot missing: ${slot}`);
 }
+assert(!client.includes('ctx.slots.inject("settings.general.item"'), "Xiao settings must be a dedicated Settings section");
 for (const service of ["theme", "slots", "locale", "connection", "remote"]) {
   assert(client.includes(JSON.stringify(service)), `Required client service missing: ${service}`);
 }
@@ -131,7 +134,8 @@ assert(client.includes("installInteractionBridge"), "Interaction bridge is not i
 for (const field of [
   "enabled", "intensity", "showHero", "characterVariant", "characterPosition", "characterOpacity", "animateCharacter",
   "showCompanion", "animatedCompanion", "companionSize", "companionFlipped", "companionPosition",
-  "showOrnament", "ambientMotion", "clickRipple", "heroParallax", "convergeWhileRunning", "balanceEnabled"
+  "showOrnament", "ambientMotion", "clickRipple", "heroParallax", "convergeWhileRunning", "balanceEnabled",
+  "customBackgroundImage", "customBackgroundAccent", "backgroundAutoPalette", "backgroundVisibility"
 ]) {
   assert(sharedSettings.includes(`${field}:`), `Shared setting definition missing: ${field}`);
   assert(host.includes(field), `Setting missing from the Host schema: ${field}`);
@@ -141,6 +145,7 @@ assert(decodeSource.includes("normalizeXiaoSettings"), "Client decoder no longer
 assert(settingsUiSource.includes("ThemePreview"), "Settings live preview missing");
 assert(settingsUiSource.includes("resetAll"), "Settings reset action missing");
 assert(settingsUiSource.includes("xiao-settings"), "Settings surface class missing");
+assert(settingsUiSource.includes("normalizeXiaoBackgroundFile"), "Local background image processor missing from Settings");
 
 // --- companion --------------------------------------------------------------
 assert(overlaySource.includes("getXiaoSessionState"), "Companion session feedback missing");

@@ -1,5 +1,5 @@
-import { createElement as h, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { DEFAULT_XIAO_SETTINGS } from "../../shared/settings.js";
+import { createElement as h, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { DEFAULT_XIAO_SETTINGS, XIAO_SETTING_DEFINITIONS, isXiaoSettingValue } from "../../shared/settings.js";
 import { XIAO_CELEBRATION_DATA_URI, XIAO_COMPANION_DATA_URI, XIAO_NUO_MASK_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.generated.js";
 import { useXiaoSettings } from "../hooks/use-xiao-settings.js";
 import { getXiaoThemeTokens, XIAO_THEME_SOURCE } from "../theme/tokens.js";
@@ -115,13 +115,42 @@ function useClickRippleLayer(overlayRef, enabled) {
 	return layerRef;
 }
 
-/** Apply the Xiao palette for exactly as long as the theme is enabled. */
-function useXiaoTheme(theme, enabled) {
+/** Apply Xiao tokens and the user background for exactly as long as the theme is enabled. */
+function useXiaoTheme(theme, value) {
+	const customBackgroundImage = isXiaoSettingValue(XIAO_SETTING_DEFINITIONS.customBackgroundImage, value.customBackgroundImage)
+		? value.customBackgroundImage : "";
+	const customBackgroundAccent = isXiaoSettingValue(XIAO_SETTING_DEFINITIONS.customBackgroundAccent, value.customBackgroundAccent)
+		? value.customBackgroundAccent : "";
+	const backgroundAutoPalette = value.backgroundAutoPalette === true;
+	const backgroundVisibility = isXiaoSettingValue(XIAO_SETTING_DEFINITIONS.backgroundVisibility, value.backgroundVisibility)
+		? value.backgroundVisibility : DEFAULT_XIAO_SETTINGS.backgroundVisibility;
+	const accentHex = value.enabled && customBackgroundImage && backgroundAutoPalette ? customBackgroundAccent : "";
+	const customBackground = Boolean(value.enabled && customBackgroundImage);
+	const tokens = useMemo(
+		() => getXiaoThemeTokens(accentHex, customBackground, backgroundVisibility),
+		[accentHex, customBackground, backgroundVisibility]
+	);
 	useEffect(() => {
-		if (!theme || !enabled) return undefined;
-		const dispose = theme.overrideTokens(XIAO_THEME_SOURCE, getXiaoThemeTokens());
+		if (!theme || !value.enabled) return undefined;
+		const dispose = theme.overrideTokens(XIAO_THEME_SOURCE, tokens);
 		return typeof dispose === "function" ? dispose : undefined;
-	}, [theme, enabled]);
+	}, [theme, value.enabled, tokens]);
+	useEffect(() => {
+		if (typeof document === "undefined") return undefined;
+		const body = document.body;
+		const previousCustomBackground = body.dataset.xiaoCustomBackground;
+		const previousStyles = new Map(["--xiao-user-background"].map(name => [name, body.style.getPropertyValue(name)]));
+		body.dataset.xiaoCustomBackground = String(customBackground);
+		if (customBackground) body.style.setProperty("--xiao-user-background", `url("${customBackgroundImage}")`);
+		return () => {
+			if (previousCustomBackground === undefined) delete body.dataset.xiaoCustomBackground;
+			else body.dataset.xiaoCustomBackground = previousCustomBackground;
+			for (const [name, previousValue] of previousStyles) {
+				if (previousValue === "") body.style.removeProperty(name);
+				else body.style.setProperty(name, previousValue);
+			}
+		};
+	}, [customBackground, customBackgroundImage]);
 }
 
 function useBodyPresentation(value, sessionState, phase) {
@@ -182,7 +211,7 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 	const converged = value.convergeWhileRunning && (sessionState === "running" || sessionState === "sending");
 	const rippleEnabled = value.enabled && value.clickRipple && activity.visible && !activity.reducedMotion;
 
-	useXiaoTheme(theme, value.enabled);
+	useXiaoTheme(theme, value);
 	useBodyPresentation(value, sessionState, phase);
 	useXiaoParallax(overlayRef, Boolean(
 		value.enabled && value.heroParallax && value.intensity === "immersive" &&
