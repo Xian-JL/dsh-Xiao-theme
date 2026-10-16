@@ -19,7 +19,7 @@ An independent character theme plugin for DeepSeek Harness (Web and Desktop). It
 ## Install
 
 ```powershell
-dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-xiao-theme-latest.tgz
+dsh plugin --profile web add dsh-xiao-theme@latest
 dsh web
 ```
 
@@ -53,7 +53,7 @@ Open DSH **Settings → Xiao**. With a local background selected, the dedicated 
 
 ## Development
 
-Marketplace submission and release maintenance: [full workflow](docs/MARKETPLACE_SUBMISSION.md). Distribution uses prebuilt GitHub Release assets; no npm publication is required.
+Marketplace submission and release maintenance: [full workflow](docs/MARKETPLACE_SUBMISSION.md). Since 1.2.1, npm is the primary distribution source; GitHub Release tarballs remain a fallback. A catalog probe must discover the new npm package before catalog cards acquire its metadata.
 
 ```powershell
 npm install
@@ -75,7 +75,7 @@ docs/              design/motion, compatibility baseline, validation record
 ## Compatibility
 
 - Verified on **DSH 0.2.0-rc.2** (Node v24.x): isolated profile install, composition, page manifest and the Host balance route.
-- Declared range: `^0.1.5-rc.1 || ^0.1.6-alpha.1 || ^0.1.7-rc.2 || ^0.2.0-rc.2` (inherited declaration; only 0.2.0-rc.2 was exercised).
+- DSH and settings-peer range: `>=0.2.0-rc.2 <0.3.0` (retains the verified rc.2 baseline and excludes 0.1.x).
 - See [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/VALIDATION.md](docs/VALIDATION.md).
 
 ## License

@@ -1,6 +1,6 @@
 {
   "name": "dsh-xiao-theme",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Xiao · Vigil of the Azure Sky: selectable character artworks, amplified motion, a draggable Xiao companion, and optional official DeepSeek balance monitoring.",
   "license": "SEE LICENSE IN LICENSE",
   "type": "module",
@@ -16,6 +16,7 @@
     "README.md",
     "README.zh-CN.md",
     "CHANGELOG.md",
+    "RELEASE_NOTES.md",
     "LICENSE",
     "THIRD_PARTY_ASSETS.md",
     "docs/DESIGN_AND_MOTION.md",
@@ -45,10 +46,10 @@
   },
   "engines": {
     "node": "^22.19.0 || >=24.0.0",
-    "dsh": "^0.1.5-rc.1 || ^0.1.6-alpha.1 || ^0.1.7-rc.2 || ^0.2.0-rc.2"
+    "dsh": ">=0.2.0-rc.2 <0.3.0"
   },
   "peerDependencies": {
-    "@deepseek-ai/dsh-settings": "^0.1.5-rc.1 || ^0.1.6-alpha.1 || ^0.1.7-rc.2 || ^0.2.0-rc.2",
+    "@deepseek-ai/dsh-settings": ">=0.2.0-rc.2 <0.3.0",
     "react": "^18.2.0"
   },
   "peerDependenciesMeta": {

@@ -86,7 +86,8 @@ assert(packageJson.dsh?.client?.platform === "web", "DSH client platform must re
 assert(packageJson.dsh?.bundle?.patch === "./cordis.patch.yml", "Bundle patch path changed unexpectedly");
 assert(packageJson.dependencies?.["@deepseek-ai/schemastery"] === "3.18.4", "@deepseek-ai/schemastery must support live Config fields");
 assert(packageJson.devDependencies?.esbuild === "0.28.2", "esbuild 0.28.2 must remain the development bundler");
-assert(packageJson.engines?.dsh === "^0.1.5-rc.1 || ^0.1.6-alpha.1 || ^0.1.7-rc.2 || ^0.2.0-rc.2", "Top-level DSH compatibility range must cover the verified baseline");
+assert(packageJson.engines?.dsh === ">=0.2.0-rc.2 <0.3.0", "Host declaration must retain local rc.2 compatibility and exclude 0.1.x");
+assert(packageJson.peerDependencies?.["@deepseek-ai/dsh-settings"]===packageJson.engines.dsh,"Settings peer and host declarations must match");
 assert(!packageJson.dsh?.client?.inject?.includes("@deepseek-ai/dsh-client-runtime"), "Removed DSH client-runtime package must not be injected");
 assert(packageJson.keywords?.includes("dsh-plugin"), "dsh-plugin discovery keyword missing");
 assert(Array.isArray(packageJson.files) && !packageJson.files.includes("assets"), "Source assets must stay out of the published package");

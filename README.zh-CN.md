@@ -19,8 +19,8 @@
 ## 安装
 
 ```powershell
-# 从 GitHub Release 的预构建安装包安装
-dsh plugin --profile web add https://github.com/Xian-JL/dsh-Xiao-theme/releases/latest/download/dsh-xiao-theme-latest.tgz
+# 从 npm 安装；桌面端把 web 替换为 desktop，并先完全退出客户端
+dsh plugin --profile web add dsh-xiao-theme@latest
 dsh web
 ```
 
@@ -54,7 +54,7 @@ dsh plugin --profile web remove dsh-xiao-theme
 
 ## 开发
 
-市场提交与后续发行步骤见 [插件市场提交全流程](docs/MARKETPLACE_SUBMISSION.md)。本插件通过 GitHub Release 分发，无需发布 npm。
+市场提交与后续发行步骤见 [插件市场提交全流程](docs/MARKETPLACE_SUBMISSION.md)。1.2.1 起以 npm 为优先分发来源，GitHub Release 保留为后备。市场目录重新探测 npm 后可展示版本与宿主要求；本地安装来源以实际依赖和 lockfile 为准。
 
 ```powershell
 npm install
@@ -78,7 +78,7 @@ docs/               设计动效、兼容基线、验证记录
 ## 兼容性
 
 - 已实测：**DSH 0.2.0-rc.2**（Node v24.x），隔离 Profile 安装、组合、页面清单与 Host 余额路由。
-- 声明区间：`^0.1.5-rc.1 || ^0.1.6-alpha.1 || ^0.1.7-rc.2 || ^0.2.0-rc.2`（继承自既有插件的声明，仅 0.2.0-rc.2 实测）。
+- DSH 与 settings peer 声明：`>=0.2.0-rc.2 <0.3.0`（保持本机兼容，0.1.x 不再列入支持范围；实测基线仍为 0.2.0-rc.2）。
 - 详见 [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) 与 [docs/VALIDATION.md](docs/VALIDATION.md)。
 
 ## 许可

@@ -1,5 +1,11 @@
 # 更新记录
 
+## 1.2.1 — npm 分发与宿主声明统一
+
+- 发布到 npm，供插件市场优先使用 registry 安装并读取版本、宿主和 peer 声明；GitHub Release 保留为后备。
+- 将 DSH 与 settings peer 统一为 `>=0.2.0-rc.2 <0.3.0`，排除旧 0.1.x 并保持本机 RC.2 可用。
+- 不修改主题功能、设置默认值、已保存参数或既有动效。
+
 ## 1.2.0 — Custom backgrounds and dedicated settings
 
 - 增加本地背景图片设置，支持 PNG/JPEG/WebP，并在客户端缩放、转为限长 WebP 后保存在 DSH Profile；图片不上传。

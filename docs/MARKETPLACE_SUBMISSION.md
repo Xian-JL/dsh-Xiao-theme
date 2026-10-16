@@ -1,6 +1,6 @@
 # 魈主题插件市场提交全流程
 
-目标：向 `awesome-dsh-plugin/awesome-dsh-plugin` 提交魈主题条目，由其目录同步至 dsh-market 的主题页。插件仍采用 GitHub Release 分发，不发布 npm。
+目标：通过 `awesome-dsh-plugin/awesome-dsh-plugin` 目录供 dsh-market 展示主题。2026-10-16 起，1.2.1 以 npm 优先分发，GitHub Release 保留后备；DSH/settings peer 为 `>=0.2.0-rc.2 <0.3.0`。市场安装逻辑会优先选择已发现的 npm 包，无需删除后备 tarball 字段。PR #6404 已于 2026-10-15 合并。以下旧版本提交/发行步骤是历史记录。
 
 依据：上游 [contributing.md](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/blob/main/contributing.md)、[PR 模板](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/blob/main/.github/pull_request_template.md) 和已合并的 [Kinich PR #5095](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/pull/5095)。本轮市场基线为 `bb8496ec4cbb9217b33bf081ec4cdf06b51501e8`。
 
