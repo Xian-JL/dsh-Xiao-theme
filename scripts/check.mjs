@@ -33,6 +33,9 @@ const errors = [];
 const assert = (condition, message) => { if (!condition) errors.push(message); };
 
 const sourceFiles = [
+  "src/client/settings/exclusive.js",
+  "src/client/background/presentation.js",
+  "src/host/exclusive.js",
   "src/shared/settings.js",
   "src/host/index.js",
   "src/host/settings-schema.js",
@@ -79,7 +82,7 @@ for (const file of [...sourceFiles, "lib/index.js", "lib/client.js"]) {
 }
 
 // --- package contract -------------------------------------------------------
-assert(/^\d+\.\d+\.\d+$/.test(packageJson.version), "package.json must use a release version");
+assert(/^\d+\.\d+\.\d+(?:-rc\.[1-9]\d*)?$/.test(packageJson.version), "package.json must use a release or explicit RC version");
 assert(packageJson.name === "dsh-xiao-theme", "package name must stay dsh-xiao-theme");
 assert(packageJson.dsh?.manifestVersion === 1, "DSH public manifest version must be 1");
 assert(packageJson.dsh?.client?.platform === "web", "DSH client platform must remain web");
@@ -94,12 +97,11 @@ assert(Array.isArray(packageJson.files) && !packageJson.files.includes("assets")
 
 // --- namespace isolation ----------------------------------------------------
 for (const source of [host, client]) {
-  assert(!/dsh-kinich-theme/.test(source), "Xiao bundles must not reference the Kinich namespace");
-  assert(!/dsh-kinich-/.test(source), "Xiao bundles must not reference Kinich CSS identifiers");
+  assert(!/dsh-kinich-/.test(source.replaceAll("dsh-kinich-theme", "")), "Only the explicit theme exclusion boundary may reference the peer namespace; no peer CSS identifiers");
 }
 assert(!/kinich/i.test(sharedSettings), "Shared settings must not reference Kinich");
 assert(!/kinich/i.test(stylesSource), "Authored stylesheet must not reference Kinich");
-assert(!/kinich/i.test(localesSource), "Locale dictionary must not reference Kinich");
+assert(localesSource.includes("theme.permission.description"), "The mandatory theme exclusion must be explained");
 assert(client.includes('id: "dsh-xiao-theme"'), "Client bundle must register the dsh-xiao-theme module id");
 
 // --- host contract ----------------------------------------------------------

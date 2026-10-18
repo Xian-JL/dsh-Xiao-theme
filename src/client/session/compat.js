@@ -62,15 +62,23 @@ export function readAwaitingSignal(snapshot) {
 }
 
 /** Coarse live phase while a run is in progress. */
-export function deriveXiaoSessionPhase(snapshot) {
+export const XIAO_PENDING_INTERACTION_KINDS = Object.freeze(["approval", "question", "plan-review"]);
+
+export function selectXiaoPendingInteraction(statusSnapshot, sessionId) {
+	const pending = statusSnapshot?.get?.(sessionId)?.pendingInteraction;
+	return pending && XIAO_PENDING_INTERACTION_KINDS.includes(pending.kind) ? pending : undefined;
+}
+
+export function deriveXiaoSessionPhase(snapshot, pendingInteraction) {
 	if (!snapshot) return "unknown";
 	if (readErrorField(snapshot)) return "failed";
+	if (pendingInteraction && XIAO_PENDING_INTERACTION_KINDS.includes(pendingInteraction.kind)) return "awaiting-input";
 	if (snapshot.awaitingFirstTurn === true ||
 		(Array.isArray(snapshot.pendingSubmissions) && snapshot.pendingSubmissions.length > 0)) {
 		return "sending";
 	}
-	if (snapshot.running === true) return "running";
 	if (readAwaitingSignal(snapshot)) return "awaiting-input";
+	if (snapshot.running === true) return "running";
 	return "idle";
 }
 

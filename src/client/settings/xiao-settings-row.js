@@ -104,6 +104,8 @@ export function XiaoSettingsRow({ settings, t }) {
 	const backgroundInput = useRef(null);
 	const resetTimer = useRef(null);
 	const noticeTimer = useRef(null);
+	const backgroundGeneration = useRef(0);
+	useEffect(() => () => { backgroundGeneration.current += 1; }, []);
 	const writable = snapshot.writable !== false;
 	const showNotice = message => {
 		setNotice(message);
@@ -141,21 +143,24 @@ export function XiaoSettingsRow({ settings, t }) {
 		const file = event.currentTarget.files?.[0];
 		event.currentTarget.value = "";
 		if (!file) return;
+		const generation = ++backgroundGeneration.current;
 		setBackgroundProcessing(true);
 		setBackgroundError("");
 		setBackgroundMessage("");
 		try {
 			const optimized = await normalizeXiaoBackgroundFile(file);
+			if (generation !== backgroundGeneration.current) return;
 			const saved = await updateMany(t("background.section"), {
 				customBackgroundImage: optimized.dataUrl,
 				customBackgroundAccent: optimized.accent ?? ""
 			});
-			if (saved) setBackgroundMessage(t("background.saved"));
+			if (saved && generation === backgroundGeneration.current) setBackgroundMessage(t("background.saved"));
 		} catch (error) {
+			if (generation !== backgroundGeneration.current) return;
 			const key = error instanceof XiaoBackgroundError ? `background.error.${error.code}` : "background.error.invalid-image";
 			setBackgroundError(t(key));
 		} finally {
-			setBackgroundProcessing(false);
+			if (generation === backgroundGeneration.current) setBackgroundProcessing(false);
 		}
 	};
 	const resetAll = () => {
@@ -412,6 +417,13 @@ export function XiaoSettingsRow({ settings, t }) {
 		]),
 
 		h(SettingSection, { key: "background", title: t("background.section"), description: t("background.description") }, [
+			h(Toggle, {
+				key: "background-enabled", checked: value.backgroundEnabled,
+				label: t("background.enable.label"), description: t("background.enable.description"),
+				disabled: backgroundDisabled || !value.customBackgroundImage,
+				onChange: () => update("backgroundEnabled", !value.backgroundEnabled),
+				stateLabel: stateLabel(value.backgroundEnabled)
+			}),
 			value.customBackgroundImage && h("img", {
 				alt: "",
 				className: "xiao-background-control__preview",

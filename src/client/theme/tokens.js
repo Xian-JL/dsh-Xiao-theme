@@ -101,14 +101,11 @@ const BACKGROUND_SURFACE_ALPHA = Object.freeze({
 	"--dsw-alias-bg-layer-1": { from: [0.94, 0.92], to: [0.50, 0.44] },
 	"--dsw-alias-bg-layer-2": { from: [0.96, 0.94], to: [0.56, 0.50] },
 	"--dsw-alias-bg-layer-3": { from: [0.97, 0.96], to: [0.62, 0.56] },
-	"--dsw-alias-bg-overlay": { from: [0.98, 0.97], to: [0.68, 0.62] },
 	"--dsw-alias-bg-module-platform": { from: [0.95, 0.93], to: [0.56, 0.50] },
 	"--dsw-alias-bg-multi-select": { from: [0.94, 0.92], to: [0.52, 0.46] },
 	"--dsw-specific-sidebar-fill": { from: [0.88, 0.85], to: [0.45, 0.40] },
 	"--dsw-specific-bubble": { from: [0.96, 0.94], to: [0.60, 0.54] },
 	"--dsw-specific-bubble-highlight": { from: [0.94, 0.92], to: [0.56, 0.50] },
-	"--dsw-specific-menu": { from: [0.96, 0.93], to: [0.66, 0.60] },
-	"--dsw-specific-selector": { from: [0.95, 0.92], to: [0.58, 0.52] }
 });
 
 function rgba(value, alpha) {
@@ -137,9 +134,13 @@ function surfaceAlpha(pair, visibility) {
 
 /** Derive only Xiao's primary accent while keeping semantic status colors intact. */
 export function getXiaoThemeTokens(accentHex = "", customBackground = false, backgroundVisibility = 75) {
-	if (!accentHex && !customBackground) return XIAO_THEME_TOKENS;
 	const result = { ...XIAO_THEME_TOKENS };
-	if (customBackground) {
+	for (const [key, value] of Object.entries(XIAO_THEME_TOKENS)) {
+		if (key in BACKGROUND_SURFACE_ALPHA || /bg-overlay|specific-menu$|specific-selector$/.test(key)) {
+			result[key.replace("--dsw-", "--xiao-opaque-")] = value;
+		}
+	}
+	if (customBackground && backgroundVisibility > 0) {
 		const safeVisibility = typeof backgroundVisibility === "number" && Number.isFinite(backgroundVisibility)
 			? backgroundVisibility : 75;
 		for (const [key, alpha] of Object.entries(BACKGROUND_SURFACE_ALPHA)) {

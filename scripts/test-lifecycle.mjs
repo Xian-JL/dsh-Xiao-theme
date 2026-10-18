@@ -90,7 +90,7 @@ check(/return null;/.test(overlay), "a disabled theme must render nothing");
 check(/delete body\.dataset\[datasetKey\]/.test(overlay), "body presentation attributes must be restored on teardown");
 check(/document\.head\.appendChild\(tag\)/.test(await read("src/client/styles.js")), "the stylesheet must be mounted once");
 check(/return \(\) => tag\.remove\(\)/.test(await read("src/client/styles.js")), "the stylesheet must be removed with the plugin");
-check(/ctx\.effect\(installInteractionBridge/.test(index), "the interaction bridge must be owned by a plugin effect");
+check(/ctx\.effect\(\(\) => installEnabledThemeEffect\(settings, installInteractionBridge\)/.test(index), "the interaction bridge must be owned by a conditional plugin effect");
 check(/ctx\.effect\(\(\) => ctx\.locale\.register/.test(index), "locale registration must be owned by a plugin effect");
 check(/ctx\.slots\.inject/.test(index), "slot registrations must be owned by the plugin");
 

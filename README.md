@@ -33,8 +33,10 @@ Then open **Settings → Xiao**. The theme is enabled by default; the balance re
 
 ## Coexistence with other character themes
 
-- `dsh-kinich-theme` may stay installed. This plugin never disables, edits or removes another plugin.
-- For the first release, keep only one full character theme enabled per profile: both take over the sidebar brand slots and a set of theme tokens, so enabling two at once produces unpredictable visuals.
+- Xiao 1.3.0 and the matching Kinich update may be installed together, but only one theme may be enabled per Profile.
+- Enabling one first saves the other's theme switch as off. A refused write aborts the switch. Wallpaper, history, parameters and motion preferences are retained.
+- Legacy both-on configuration keeps Kinich; a later explicit selection switches themes. Both may be off. An old Kinich without a theme-level switch must be upgraded or disabled in the market first.
+- These changes belong to **1.3.0-rc.1**, paired with **Kinich 2.0.3-rc.1**. Candidates use npm `next`, leaving `latest` unchanged. See [the upgrade specification](docs/UPGRADE_1.3.0_SPECIFICATION.md).
 
 ## Settings
 
@@ -47,7 +49,7 @@ Open DSH **Settings → Xiao**. With a local background selected, the dedicated 
 | Xiao companion | Show companion, size, horizontal direction, idle animation, reset position |
 | Session feedback | Converge decoration while running |
 | Environment | Background ornament, ambient particles, click wind trace |
-| Background | Local image, background visibility, automatic accent matching |
+| Background | Local image, independent display switch, visibility and automatic accent; off/0% retain the image and settings |
 | Official balance | Show the official DeepSeek balance |
 | Reset | Reset companion position, reset all settings (two-step confirm) |
 
@@ -74,7 +76,7 @@ docs/              design/motion, compatibility baseline, validation record
 
 ## Compatibility
 
-- Verified on **DSH 0.2.0-rc.2** (Node v24.x): isolated profile install, composition, page manifest and the Host balance route.
+- Historical baseline: **DSH 0.2.0-rc.2**. This update also checks **0.2.1-rc.2** isolated startup, legacy conflict repair, both single-theme choices across restart and served client manifests. Desktop visual acceptance remains pending.
 - DSH and settings-peer range: `>=0.2.0-rc.2 <0.3.0` (retains the verified rc.2 baseline and excludes 0.1.x).
 - See [docs/COMPATIBILITY.md](docs/COMPATIBILITY.md) and [docs/VALIDATION.md](docs/VALIDATION.md).
 

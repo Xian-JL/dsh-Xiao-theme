@@ -1,5 +1,15 @@
 # 验证记录（docs/VALIDATION.md）
 
+## 2026-10-18：1.3.0 开发验证
+
+- 当前用户安装基线：Kinich 2.0.2、Xiao 1.2.1，均为 npm；DSH 0.2.1-rc.2。当前 Desktop 未修改，未调用 Computer Use。
+- `npm run verify` 覆盖原有全部套件与新增 `test:upgrade`；新增行为包含互斥写入顺序、拒绝/旧包、并发只显示一套、订阅/品牌释放、宿主冲突修复与重启模型、背景关闭/0%、浅深弹窗实色、阶段变化过滤与等待状态。
+- 配套 Kinich 构建与契约检查、settings、presentation、interaction、dsh017 检查通过；原有动效保留，未执行与本次无关的整套壁纸回归。
+- 使用 shipped CLI 在独立 `xiao-upgrade-130-lab` 做初验，再在新建 `xiao-upgrade-130-final` 安装最终运行构建，逐一校验两边 Host/Client bundle SHA-256 与源码构建相同；真实启动验证：旧配置两开会保存 Xiao 关闭；重启仍保持；显式仅启用 Xiao 及再重启也保持；每次认证页面请求 200，包含两个客户端清单。
+- 本地证据：`E:/Codex_workspace/Kinich_archive/2026-10-18_xiao-1.3.0/ISOLATED_HOST_RESULT.json`。认证 token 不写入记录。
+- 待人工：两边设置开关及失败提示的观感、两者关闭后的原生页面、背景切换、浅深弹窗/菜单、真实会话状态流。没有本轮视觉或性能测量结论。
+- 1.3.0 与 Kinich 配套改动尚未公开发布。下文是历史记录，不能据此推断当前版本已做过同项实机验收。
+
 记录 `dsh-xiao-theme@1.0.0` 的验证环境、执行内容与结果。**未执行的项目单独列出，不作推断。**
 
 验证日期：2026-10-02（Asia/Shanghai）

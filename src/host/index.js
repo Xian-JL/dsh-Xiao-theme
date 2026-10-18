@@ -1,6 +1,7 @@
 import { XIAO_SETTINGS_NAMESPACE } from "../shared/settings.js";
 import { XiaoThemeConfigSchema, XiaoThemeSettingsSchema } from "./settings-schema.js";
 import { installBalanceRoute } from "./balance-route.js";
+import { installThemeExclusion } from "./exclusive.js";
 
 /** Stable package id shared by the Host, Client and bundle row. */
 export const name = "dsh-xiao-theme";
@@ -13,6 +14,7 @@ export const Config = XiaoThemeConfigSchema;
 export function apply(ctx) {
 	installBalanceRoute(ctx);
 	ctx.inject(["settings"], (settingsCtx) => {
+		settingsCtx.effect(() => installThemeExclusion(settingsCtx));
 		if (typeof settingsCtx.settings.register === "function") {
 			settingsCtx.settings.register(XIAO_SETTINGS_NAMESPACE, XiaoThemeSettingsSchema, { applies: "live" });
 		} else if (typeof settingsCtx.settings.configure === "function") {

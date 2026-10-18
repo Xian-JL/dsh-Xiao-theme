@@ -4,6 +4,8 @@ import {
 	XIAO_TERMINAL_HOLD_MS,
 	classifySettledRun,
 	deriveXiaoSessionPhase,
+	readCompletionSignal,
+	selectXiaoPendingInteraction,
 	resolveSessionId
 } from "./compat.js";
 
@@ -12,16 +14,12 @@ import {
  * into product feedback for exactly one sessionId, so a background task or a
  * sub-session can never repaint the main view's companion.
  */
-export function SessionStateBridge({ useSession, sessionId }) {
-	const phase = useSession(deriveXiaoSessionPhase);
+function SessionStateBridgeCore({ useSession, sessionId, pendingInteraction }) {
+	const phase = useSession(snapshot => deriveXiaoSessionPhase(snapshot, pendingInteraction));
 	const snapshotSessionId = useSession(snapshot => snapshot?.sessionId ?? snapshot?.id);
 	const stopReason = useSession(snapshot => {
 		if (!snapshot || typeof snapshot !== "object") return "";
-		for (const field of ["stopReason", "lastStopReason", "finishReason", "endReason", "completionStatus"]) {
-			const value = snapshot[field];
-			if (typeof value === "string") return value;
-		}
-		return "";
+		return readCompletionSignal(snapshot).reason ?? "";
 	});
 	const hasError = useSession(snapshot => {
 		if (!snapshot || typeof snapshot !== "object") return false;
@@ -74,4 +72,16 @@ export function SessionStateBridge({ useSession, sessionId }) {
 	react.useEffect(() => () => clearXiaoSessionState(resolvedSessionId), [resolvedSessionId]);
 
 	return null;
+}
+
+function SessionStateBridgeWithInteraction({ useSession, useSessionStatus, sessionId }) {
+	const snapshotId = useSession(snapshot => snapshot?.sessionId ?? snapshot?.id);
+	const id = resolveSessionId(sessionId, { sessionId: snapshotId });
+	const pendingInteraction = useSessionStatus(snapshot => selectXiaoPendingInteraction(snapshot, id));
+	return react.createElement(SessionStateBridgeCore, { useSession, sessionId, pendingInteraction });
+}
+
+/** Separate components keep hook order stable when old hosts lack the status hook. */
+export function SessionStateBridge(props) {
+	return react.createElement(typeof props.useSessionStatus === "function" ? SessionStateBridgeWithInteraction : SessionStateBridgeCore, props);
 }

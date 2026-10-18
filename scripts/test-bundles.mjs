@@ -77,7 +77,7 @@ const effectLabels = [];
 const disposers = [];
 const scopeBinds = [];
 const fakeSettingsScope = {
-	bind(options) { scopeBinds.push(options); return { getSnapshot: () => ({}), subscribe: () => () => {} }; },
+	bind(options) { scopeBinds.push(options); const snapshot = { value: { enabled: options.namespace === "dsh-xiao-theme" } }; return { getSnapshot: () => snapshot, subscribe: () => () => {} }; },
 	getSnapshot: () => ({}),
 	subscribe: () => () => {}
 };
@@ -120,7 +120,7 @@ check(Object.keys(localeRegistrations[0].dictionary.zh).length > 90, "the Chines
 const missingEnglish = Object.keys(localeRegistrations[0].dictionary.zh)
 	.filter(key => !(key in localeRegistrations[0].dictionary.en));
 equal(missingEnglish, [], "every Chinese key has an English counterpart");
-equal(scopeBinds.length, 1, "the client binds one settings namespace");
+equal(scopeBinds.length, 2, "the client observes own settings and the mutually exclusive peer");
 equal(scopeBinds[0].namespace, "dsh-xiao-theme", "the settings namespace is xiao-scoped");
 check(typeof scopeBinds[0].decode === "function", "the settings binding supplies a decoder");
 check(effectLabels.some(label => label.includes("stylesheet")), "the stylesheet effect is registered");

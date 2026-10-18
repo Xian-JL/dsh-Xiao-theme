@@ -6,13 +6,14 @@ import {
 	stableXiaoPagePhase,
 	transitionXiaoPagePhase
 } from "./phase-model.js";
+import { xiaoPhaseMutationRelevant } from "./phase-model.js";
 
 /**
  * Observe only DSH's own phase marker. This is presentation state: it never
  * mutates navigation, sessions, or persisted settings, and it can be interrupted
  * mid-transition without leaving a stuck stage.
  */
-export function useXiaoPagePhase() {
+export function useXiaoPagePhase(enabled = true) {
 	const [phase, setPhase] = useState("conversation");
 	const phaseRef = useRef("conversation");
 	const heroRef = useRef(false);
@@ -21,6 +22,7 @@ export function useXiaoPagePhase() {
 	const frame = useRef(null);
 
 	useEffect(() => {
+		if (!enabled) { setPhase("conversation"); initialized.current = false; return; }
 		if (typeof document === "undefined" || typeof MutationObserver === "undefined") return;
 		const reducedMotion = typeof window !== "undefined"
 			? window.matchMedia?.("(prefers-reduced-motion: reduce)")
@@ -63,7 +65,7 @@ export function useXiaoPagePhase() {
 			frame.current = requestAnimationFrame(sync);
 		};
 
-		const observer = new MutationObserver(scheduleSync);
+		const observer = new MutationObserver(records => { if (xiaoPhaseMutationRelevant(records)) scheduleSync(); });
 		observer.observe(document.body, {
 			attributes: true,
 			attributeFilter: ["data-phase"],
@@ -80,7 +82,7 @@ export function useXiaoPagePhase() {
 				delete document.body.dataset.xiaoPagePhase;
 			}
 		};
-	}, []);
+	}, [enabled]);
 
 	return phase;
 }

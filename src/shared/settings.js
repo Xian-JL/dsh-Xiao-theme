@@ -54,6 +54,7 @@ export const XIAO_SETTING_DEFINITIONS = Object.freeze({
 		pattern: HEX_COLOR_PATTERN, recoverInvalid: true
 	}),
 	backgroundAutoPalette: Object.freeze({ kind: "boolean", default: true }),
+	backgroundEnabled: Object.freeze({ kind: "boolean", default: true }),
 	backgroundVisibility: Object.freeze({ kind: "number", default: 75, min: 0, max: 100, step: 5, recoverInvalid: true })
 });
 

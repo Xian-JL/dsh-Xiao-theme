@@ -2,6 +2,7 @@ import { createElement as h, useCallback, useEffect, useLayoutEffect, useMemo, u
 import { DEFAULT_XIAO_SETTINGS, XIAO_SETTING_DEFINITIONS, isXiaoSettingValue } from "../../shared/settings.js";
 import { XIAO_CELEBRATION_DATA_URI, XIAO_COMPANION_DATA_URI, XIAO_NUO_MASK_DATA_URI, XIAO_STANDING_DATA_URI } from "../assets.generated.js";
 import { useXiaoSettings } from "../hooks/use-xiao-settings.js";
+import { xiaoBackgroundPresentation } from "../background/presentation.js";
 import { getXiaoThemeTokens, XIAO_THEME_SOURCE } from "../theme/tokens.js";
 import { getXiaoSessionState, subscribeXiaoSessionState } from "../session/status-store.js";
 import { isTerminalXiaoState, selectMainViewSessionId, XIAO_TERMINAL_HOLD_MS } from "../session/compat.js";
@@ -124,8 +125,9 @@ function useXiaoTheme(theme, value) {
 	const backgroundAutoPalette = value.backgroundAutoPalette === true;
 	const backgroundVisibility = isXiaoSettingValue(XIAO_SETTING_DEFINITIONS.backgroundVisibility, value.backgroundVisibility)
 		? value.backgroundVisibility : DEFAULT_XIAO_SETTINGS.backgroundVisibility;
-	const accentHex = value.enabled && customBackgroundImage && backgroundAutoPalette ? customBackgroundAccent : "";
-	const customBackground = Boolean(value.enabled && customBackgroundImage);
+	const presentation = xiaoBackgroundPresentation({ ...value, customBackgroundImage, customBackgroundAccent, backgroundAutoPalette, backgroundVisibility });
+	const accentHex = presentation.accent;
+	const customBackground = presentation.visible;
 	const tokens = useMemo(
 		() => getXiaoThemeTokens(accentHex, customBackground, backgroundVisibility),
 		[accentHex, customBackground, backgroundVisibility]
@@ -178,10 +180,10 @@ function useBodyPresentation(value, sessionState, phase) {
 
 export function XiaoOverlay({ settings, theme, t, useSessions }) {
 	const snapshot = useXiaoSettings(settings);
-	const value = snapshot.value ?? DEFAULT_XIAO_SETTINGS;
+	const value = snapshot.value ?? { ...DEFAULT_XIAO_SETTINGS, enabled: false };
 	const writable = snapshot.writable !== false;
 	const activity = useXiaoActivity();
-	const phase = useXiaoPagePhase();
+	const phase = useXiaoPagePhase(value.enabled);
 	const heroTarget = isXiaoHeroTarget(phase);
 	const mainSessionId = typeof useSessions === "function" ? useSessions(selectMainViewSessionId) : undefined;
 	const rawSessionState = useSessionFeedback(mainSessionId);

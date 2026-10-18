@@ -2,6 +2,16 @@
 
 本文件记录 `dsh-xiao-theme` 实际核实的 DSH 接口基线、继承的约定与未验证事项。开发接手者应先核对本文件，再假设其中任何数值仍然成立。
 
+## 2026-10-18：1.3.0 开发检查
+
+- 本机 shipped CLI 与宿主模块均为 **0.2.1-rc.2**，应用内 Node 为 v24.21.0。该宿主仍是 RC，不能称为稳定版验收。
+- 直接读取本机归档内接口，确认 theme.overrideTokens、shell.overlay、侧栏品牌插槽、conversation.hero.brand.mark、conversation.composer.dock 及 hero/active/settling 标记仍存在。
+- 配置表单通过 configForms.get，兼容旧 settingsScope.bind。互斥协调使用 settings.describe/mutate 与 settings/document-updated；已在隔离 Profile 真实持久化验证。
+- 新增宿主可选 useSessionStatus pendingInteraction 适配；approval/question/plan-review 按 sessionId 读取，缺失 hook 保留旧模型；真实用户会话交互仍待人工验收。
+- 两边 npm 安装基线是 Kinich 2.0.2 / Xiao 1.2.1；本轮不修改 desktop Profile。配套源码中的新 Kinich 总开关必须随下一次 Kinich 发布交付。
+- 下方为历史 0.2.0-rc.2 记录，不是当前安装清单。
+- 已核对本机 dshmarket 的宿主版本比对采用 `includePrerelease: true`；因此现有声明范围能用于当前 RC。标准 npm semver 默认不包含所有 RC，不能把这条宿主行为泛化为所有工具的默认规则。
+
 2026-10-16，1.2.1：统一 DSH 与 settings peer 范围为 `>=0.2.0-rc.2 <0.3.0`，不再声明 0.1.x。宿主实测基线仍为 0.2.0-rc.2；下表中的旧安装清单属于原测试记录。本次以 npm 优先分发，与 Kinich 的宿主要求一致。
 
 ## 1. 本轮核实的环境

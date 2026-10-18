@@ -41,7 +41,9 @@ export function installInteractionBridge() {
 	if (typeof document === "undefined") return () => {};
 	let focusedInput = null;
 	let pendingPointer = null;
-	const pressTimers = new WeakMap();
+	let disposed = false;
+	const deferred = new Set();
+	const pressTimers = new Map();
 	const navigationTimers = new Map();
 	let navigationPulse = 0;
 
@@ -54,7 +56,7 @@ export function installInteractionBridge() {
 	const focusOut = event => {
 		const input = getTextInput(event.target);
 		if (!input) return;
-		queueMicrotask(() => { if (!getTextInput(document.activeElement)) setFocused(null); });
+		queueMicrotask(() => { if (!disposed && !getTextInput(document.activeElement)) setFocused(null); });
 	};
 	const pulseAction = action => {
 		if (!action?.isConnected || action.closest(".xiao-overlay")) return;
@@ -79,12 +81,15 @@ export function installInteractionBridge() {
 		pendingPointer = null;
 		// DSH owns workspace, menu and session actions. Decoration runs afterwards
 		// so React can finish switching views before we touch the DOM.
-		setTimeout(() => {
+		const task = setTimeout(() => {
+			deferred.delete(task);
+			if (disposed) return;
 			pulseAction(action);
 			if (queueRipple) {
 				document.dispatchEvent(new CustomEvent(XIAO_CLICK_RIPPLE_EVENT, { detail: pointer }));
 			}
 		}, 0);
+		deferred.add(task);
 	};
 	const selectedNavigation = new MutationObserver(records => {
 		if (document.visibilityState !== "visible") return;
@@ -109,6 +114,11 @@ export function installInteractionBridge() {
 	document.addEventListener("pointercancel", pointerCancel, true);
 	document.addEventListener("click", click);
 	return () => {
+		disposed = true;
+		for (const timer of deferred) clearTimeout(timer);
+		deferred.clear();
+		for (const [action, timer] of pressTimers) { clearTimeout(timer); delete action.dataset.xiaoPressed; }
+		pressTimers.clear();
 		selectedNavigation.disconnect();
 		for (const [item, timer] of navigationTimers) {
 			clearTimeout(timer);
