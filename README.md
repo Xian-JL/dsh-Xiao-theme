@@ -36,11 +36,11 @@ Then open **Settings → Xiao**. The theme is enabled by default; the balance re
 - Xiao 1.3.0 and the matching Kinich update may be installed together, but only one theme may be enabled per Profile.
 - Enabling one first saves the other's theme switch as off. A refused write aborts the switch. Wallpaper, history, parameters and motion preferences are retained.
 - Legacy both-on configuration keeps Kinich; a later explicit selection switches themes. Both may be off. An old Kinich without a theme-level switch must be upgraded or disabled in the market first.
-- These changes belong to **1.3.0-rc.1**, paired with **Kinich 2.0.3-rc.1**. Candidates use npm `next`, leaving `latest` unchanged. See [the upgrade specification](docs/UPGRADE_1.3.0_SPECIFICATION.md).
+- These changes are available since **1.3.0-rc.1**; the current candidate is **1.3.0-rc.2**, paired with **Kinich 2.0.3-rc.2**. Candidates use npm `next`, leaving `latest` unchanged. See [the upgrade specification](docs/UPGRADE_1.3.0_SPECIFICATION.md).
 
 ## Settings
 
-GitHub development adds eight section shortcuts at the top of Settings: theme, visual intensity, companion, session feedback, environment, background, balance and reset. Clicking or keyboard activation scrolls to and focuses the target section. This change is not yet on npm.
+`1.3.0-rc.2` adds eight section shortcuts at the top of Settings: theme, visual intensity, companion, session feedback, environment, background, balance and reset. Clicking or keyboard activation scrolls to and focuses the target section. Candidates use npm `next`, leaving `latest` unchanged.
 
 Open DSH **Settings → Xiao**. With a local background selected, the dedicated page can tune its visibility and optional accent matching.
 

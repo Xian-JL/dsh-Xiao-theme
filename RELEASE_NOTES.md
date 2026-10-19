@@ -1,3 +1,9 @@
+# Xiao 1.3.0-rc.2 — settings section shortcuts
+
+2026-10-19. Adds eight localized settings shortcuts with keyboard activation, target focus, wrapping layout and independent IDs per settings instance. Read-only settings remain navigable. Existing theme, background and companion behaviour is preserved.
+
+Pairs with Kinich 2.0.3-rc.2. Distribute through npm next without changing latest. This publication does not replace the Desktop installation. The previously accepted rc.1 remains the baseline; the shortcuts have behaviour and isolated-host checks, without claiming a new Desktop visual acceptance. Earlier notes below are historical snapshots.
+
 # Xiao Theme v1.3.0-rc.1 — acceptance candidate
 
 Xiao and the accompanying **Kinich 2.0.3-rc.1** enforce one active character theme per Profile. Switching first disables the other theme and retains all its data. A failed disable aborts the switch; legacy startup conflicts keep Kinich. Brand slots and interaction effects are released when disabled.
