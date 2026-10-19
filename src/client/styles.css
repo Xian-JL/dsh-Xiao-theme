@@ -1086,9 +1086,37 @@ body[data-xiao-theme='on']:has(.xiao-welcome) [data-phase='hero'] [class$='_comp
   display: none;
 }
 
+.xiao-settings__navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.xiao-settings__navigation button {
+  padding: 7px 11px;
+  border: 1px solid var(--dsw-alias-border-l3);
+  border-radius: 8px;
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-primary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.xiao-settings__navigation button:hover {
+  background: color-mix(in srgb, var(--xiao-jade) 12%, var(--dsw-alias-bg-layer-1));
+}
+
+.xiao-settings__navigation button:focus-visible,
+.xiao-settings__section:focus-visible {
+  outline: 2px solid var(--xiao-jade);
+  outline-offset: 3px;
+}
+
 .xiao-settings__section {
   display: grid;
   gap: 10px;
+  scroll-margin-block-start: 12px;
 }
 
 .xiao-settings__section--last {

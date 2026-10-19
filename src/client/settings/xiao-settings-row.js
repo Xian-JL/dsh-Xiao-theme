@@ -1,4 +1,4 @@
-import { createElement as h, useEffect, useRef, useState } from "react";
+import { createElement as h, useEffect, useId, useRef, useState } from "react";
 import {
 	DEFAULT_XIAO_SETTINGS,
 	VISUAL_INTENSITIES,
@@ -52,8 +52,8 @@ function ThemePreview({ t, value }) {
 	]);
 }
 
-function SettingSection({ children, className = "", description, eyebrow, title }) {
-	return h("section", { className: ["xiao-settings__section", className].filter(Boolean).join(" ") }, [
+function SettingSection({ children, className = "", description, eyebrow, title, id }) {
+	return h("section", { className: ["xiao-settings__section", className].filter(Boolean).join(" "), id, tabIndex: -1, "aria-label": title }, [
 		h(SectionHeader, { description, eyebrow, key: "header", title }),
 		h("div", { className: "xiao-settings__section-body", key: "body" }, children)
 	]);
@@ -84,6 +84,17 @@ const SIZE_LABEL_KEY = {
 	lg: "companion.size.lg"
 };
 
+const SETTINGS_SECTIONS = Object.freeze([
+	["theme", "theme.section"],
+	["intensity", "intensity.section"],
+	["companion", "companion.section"],
+	["state", "state.section"],
+	["environment", "environment.section"],
+	["background", "background.section"],
+	["balance", "balance.section"],
+	["actions", "actions.section"]
+]);
+
 /**
  * Complete Xiao settings page rendered in its own Settings section.
  *
@@ -92,6 +103,8 @@ const SIZE_LABEL_KEY = {
  * real balance, or teleports the live companion.
  */
 export function XiaoSettingsRow({ settings, t }) {
+	const navigationId = useId();
+	const sectionId = key => `xiao-settings-${navigationId}-${key}`;
 	const snapshot = useXiaoSettings(settings);
 	const value = snapshot.value ?? DEFAULT_XIAO_SETTINGS;
 	const [pending, setPending] = useState(null);
@@ -195,6 +208,16 @@ export function XiaoSettingsRow({ settings, t }) {
 			h("span", { className: "xiao-settings__version", key: "version" }, `v${PLUGIN_VERSION}`)
 		]),
 
+		h("nav", { className: "xiao-settings__navigation", key: "navigation", "aria-label": t("settings.navigation") },
+		SETTINGS_SECTIONS.map(([key, label]) => h("button", {
+			key, type: "button", "aria-controls": sectionId(key),
+			onClick: () => {
+				const section = document.getElementById(sectionId(key));
+				section?.scrollIntoView({ block: "start", behavior: "auto" });
+				section?.focus({ preventScroll: true });
+			}
+		}, t(label)))),
+
 		h(ThemePreview, { key: "preview", t, value }),
 
 		!writable && h("p", { className: "xiao-settings__notice", key: "readonly", role: "status" }, t("state.unavailable")),
@@ -218,7 +241,7 @@ export function XiaoSettingsRow({ settings, t }) {
 		notice && h("p", { className: "xiao-settings__notice", key: "notice", role: "status" }, notice),
 		busyLabel && writable && h("p", { "aria-live": "polite", className: "xiao-settings__notice", key: "busy", role: "status" }, busyLabel),
 
-		h(SettingSection, { key: "theme", title: t("theme.section"), description: t("description") }, [
+		h(SettingSection, { id: sectionId("theme"), key: "theme", title: t("theme.section"), description: t("description") }, [
 			h(Toggle, {
 				checked: value.enabled,
 				description: t("theme.enable.description"),
@@ -234,7 +257,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			])
 		]),
 
-		h(SettingSection, { key: "intensity", title: t("intensity.section"), description: t("intensity.description") }, [
+		h(SettingSection, { id: sectionId("intensity"), key: "intensity", title: t("intensity.section"), description: t("intensity.description") }, [
 			h(ChoiceGroup, {
 				disabled,
 				key: "intensity",
@@ -310,7 +333,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			])
 		]),
 
-		h(SettingSection, { key: "companion", title: t("companion.section"), description: t("companion.section.description") }, [
+		h(SettingSection, { id: sectionId("companion"), key: "companion", title: t("companion.section"), description: t("companion.section.description") }, [
 			h(Toggle, {
 				checked: value.showCompanion,
 				description: t("companion.show.description"),
@@ -370,7 +393,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			])
 		]),
 
-		h(SettingSection, { key: "state", title: t("state.section"), description: t("state.converge.description") }, [
+		h(SettingSection, { id: sectionId("state"), key: "state", title: t("state.section"), description: t("state.converge.description") }, [
 			h(Toggle, {
 				checked: value.convergeWhileRunning,
 				description: t("state.converge.description"),
@@ -386,7 +409,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			])
 		]),
 
-		h(SettingSection, { key: "environment", title: t("environment.section"), description: t("environment.description") }, [
+		h(SettingSection, { id: sectionId("environment"), key: "environment", title: t("environment.section"), description: t("environment.description") }, [
 			h(Toggle, {
 				checked: value.showOrnament,
 				description: t("ornament.description"),
@@ -416,7 +439,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			})
 		]),
 
-		h(SettingSection, { key: "background", title: t("background.section"), description: t("background.description") }, [
+		h(SettingSection, { id: sectionId("background"), key: "background", title: t("background.section"), description: t("background.description") }, [
 			h(Toggle, {
 				key: "background-enabled", checked: value.backgroundEnabled,
 				label: t("background.enable.label"), description: t("background.enable.description"),
@@ -487,7 +510,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			backgroundError && h("p", { className: "xiao-background-control__error", key: "background-error", role: "alert" }, backgroundError)
 		]),
 
-		h(SettingSection, { key: "balance", title: t("balance.section"), description: t("balance.section.description") }, [
+		h(SettingSection, { id: sectionId("balance"), key: "balance", title: t("balance.section"), description: t("balance.section.description") }, [
 			h(Toggle, {
 				checked: value.balanceEnabled,
 				description: t("balance.enable.description"),
@@ -500,7 +523,7 @@ export function XiaoSettingsRow({ settings, t }) {
 			h("p", { className: "xiao-settings__hint", key: "threshold" }, `${t("balance.provider")} · ${t("balance.low")}`)
 		]),
 
-		h(SettingSection, { className: "xiao-settings__section--last", description: t("actions.section.description"), key: "actions", title: t("actions.section") }, [
+		h(SettingSection, { id: sectionId("actions"), className: "xiao-settings__section--last", description: t("actions.section.description"), key: "actions", title: t("actions.section") }, [
 			h("div", { className: "xiao-settings__actions" }, [
 				h(ActionButton, {
 					disabled,

@@ -12,6 +12,7 @@ export const XIAO_LOCALES = {
 		"preview.eyebrow": "XIAO / LIVE PREVIEW",
 
 		"theme.section": "主题",
+		"settings.navigation": "魈设置分区快捷导航",
 		"theme.enable": "启用魈主题",
 		"theme.enable.description": "关闭后立即恢复 DSH 原生外观，设置与位置仍然保留。",
 		"theme.permission": "同时只启用一个完整角色主题",
@@ -176,6 +177,7 @@ export const XIAO_LOCALES = {
 		"preview.eyebrow": "XIAO / LIVE PREVIEW",
 
 		"theme.section": "Theme",
+		"settings.navigation": "Xiao settings section shortcuts",
 		"theme.enable": "Enable the Xiao theme",
 		"theme.enable.description": "Turning this off restores the native DSH look immediately; settings and positions are kept.",
 		"theme.permission": "One full character theme at a time",

@@ -40,6 +40,8 @@ Then open **Settings → Xiao**. The theme is enabled by default; the balance re
 
 ## Settings
 
+GitHub development adds eight section shortcuts at the top of Settings: theme, visual intensity, companion, session feedback, environment, background, balance and reset. Clicking or keyboard activation scrolls to and focuses the target section. This change is not yet on npm.
+
 Open DSH **Settings → Xiao**. With a local background selected, the dedicated page can tune its visibility and optional accent matching.
 
 | Group | Settings |
