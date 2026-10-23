@@ -1,3 +1,11 @@
+# Xiao 1.3.0-rc.3 — readability and lifecycle improvements
+
+2026-10-23. Adds read-only light/dark palette previews drawn from the emitted theme tokens and repairs failing text/button contrast on opaque theme surfaces. Saved wallpaper samples, historical derived palettes, semantic status colours and existing motion remain intact.
+
+Adds a 15-second client balance timeout, request cancellation and active-consumer gating. Credential changes while disabled only invalidate the old cache, and old transports no longer block a new account. Manual refresh feedback is guarded against stale results.
+
+Paired candidates: Kinich 2.0.3-rc.3 / Xiao 1.3.0-rc.3. Distribute through GitHub prerelease and npm next without changing latest. No Desktop download or replacement is included. Full checks, 20,544 contrast pairs, controlled lifecycle cases and isolated DSH 0.2.1-rc.2 startup/restart checks support this candidate; they do not constitute a new user Desktop visual acceptance or whole-page WCAG claim over arbitrary wallpaper pixels. See docs/ECOSYSTEM_OPTIMIZATION_2026-10-23.md. Earlier notes below are historical snapshots.
+
 # Xiao 1.3.0-rc.2 — settings section shortcuts
 
 2026-10-19. Adds eight localized settings shortcuts with keyboard activation, target focus, wrapping layout and independent IDs per settings instance. Read-only settings remain navigable. Existing theme, background and companion behaviour is preserved.

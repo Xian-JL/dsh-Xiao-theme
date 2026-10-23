@@ -19,6 +19,7 @@ import {
 	getBalanceSnapshot,
 	refreshBalance,
 	refreshBalanceForCredentialChange,
+	retainBalancePolling,
 	resetBalanceStore
 } from "../src/client/balance/balance-store.js";
 
@@ -95,9 +96,10 @@ globalThis.fetch = () => new Promise(resolve => { pending.push(resolve); });
 const respond = body => ({ json: async () => body, ok: true, status: 200 });
 
 resetBalanceStore();
+const releasePolling = retainBalancePolling();
 const first = refreshBalance();
 const second = refreshBalanceForCredentialChange();
-equal(pending.length, 1, "only one request is in flight for the first credential");
+equal(pending.length, 2, "a replaced credential refreshes immediately even when the old transport ignores abort");
 pending[0](respond({ currency: "CNY", status: "ready", stale: false, totalBalance: "1.00" }));
 await first;
 check(getBalanceSnapshot().totalBalance !== "1.00", "a late answer for a replaced credential is dropped");
@@ -108,6 +110,10 @@ const settled = await second;
 equal(settled.totalBalance, "20.00", "the newest answer is published");
 equal(getBalanceSnapshot().totalBalance, "20.00", "the cache holds the newest account value");
 check(getBalanceSnapshot().overheated === false, "a healthy balance is not marked low");
+releasePolling();
+await refreshBalanceForCredentialChange();
+equal(pending.length, 2, "credential changes while balance is disabled do not issue requests");
+equal(getBalanceSnapshot().totalBalance, undefined, "a disabled consumer still invalidates the old account cache");
 
 // A low balance only raises the local warning state.
 globalThis.fetch = async () => respond({ currency: "CNY", status: "ready", stale: false, totalBalance: "8.00" });
@@ -122,5 +128,34 @@ resetBalanceStore();
 const failed = await refreshBalance({ force: true });
 equal(failed.status, "unavailable", "a network failure degrades to unavailable");
 equal(getBalanceSnapshot().status, "unavailable", "the degraded state is published");
+
+// Cancelling the final consumer cancels its request, not merely its timer.
+let activeSignal;
+globalThis.fetch = (_url, options) => {
+	activeSignal = options.signal;
+	return new Promise((_resolve, reject) => options.signal.addEventListener("abort", () => reject(new Error("aborted")), { once: true }));
+};
+resetBalanceStore();
+const releaseLast = retainBalancePolling();
+check(!activeSignal.aborted, "an active consumer owns a live request");
+releaseLast();
+check(activeSignal.aborted, "the final consumer cancels its in-flight request");
+await new Promise(resolve => setTimeout(resolve, 0));
+
+// Advance the actual timeout callback without making the suite sleep 15 seconds.
+const originalTimeout = globalThis.setTimeout, originalClear = globalThis.clearTimeout;
+let expire;
+const timeoutId = {};
+globalThis.setTimeout = (callback, delay, ...args) => delay === 15_000
+	? (expire = callback, timeoutId) : originalTimeout(callback, delay, ...args);
+globalThis.clearTimeout = id => { if (id !== timeoutId) originalClear(id); };
+try {
+	resetBalanceStore();
+	const timed = refreshBalance();
+	check(typeof expire === "function", "a balance request has a bounded client timeout");
+	expire();
+	await timed;
+	check(activeSignal.aborted, "the timeout aborts the request");
+} finally { globalThis.setTimeout = originalTimeout; globalThis.clearTimeout = originalClear; }
 
 finish("balance");

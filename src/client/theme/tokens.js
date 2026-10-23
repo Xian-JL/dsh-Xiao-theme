@@ -1,4 +1,5 @@
 import { deriveXiaoAccentPalette } from "../background/palette.js";
+import { enforceReadableThemeTokens } from "./readability.js";
 
 function token(light, dark) {
 	return Object.freeze({ light, dark });
@@ -153,6 +154,8 @@ export function getXiaoThemeTokens(accentHex = "", customBackground = false, bac
 		if (palette) {
 			result["--dsw-alias-brand-primary"] = token(palette.light, palette.dark);
 			result["--dsw-alias-brand-primary-invert"] = token(palette.foregroundLight, palette.foregroundDark);
+			result["--dsw-alias-brand-primary-new-colorprimary-new-color"] = token(palette.strongLight, palette.strongDark);
+			result["--dsw-alias-label-primary-bluish"] = token(palette.strongLight, palette.strongDark);
 			result["--dsw-alias-brand-text"] = token(palette.strongLight, palette.strongDark);
 			result["--dsw-alias-button-primary-fill"] = token(palette.light, palette.dark);
 			result["--dsw-alias-button-primary-hover"] = token(palette.strongLight, palette.strongDark);
@@ -161,5 +164,5 @@ export function getXiaoThemeTokens(accentHex = "", customBackground = false, bac
 			result["--dsw-alias-state-business-primary"] = token(palette.light, palette.dark);
 		}
 	}
-	return Object.freeze(result);
+	return Object.freeze(enforceReadableThemeTokens(result, XIAO_THEME_TOKENS));
 }

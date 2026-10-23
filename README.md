@@ -36,9 +36,11 @@ Then open **Settings → Xiao**. The theme is enabled by default; the balance re
 - Xiao 1.3.0 and the matching Kinich update may be installed together, but only one theme may be enabled per Profile.
 - Enabling one first saves the other's theme switch as off. A refused write aborts the switch. Wallpaper, history, parameters and motion preferences are retained.
 - Legacy both-on configuration keeps Kinich; a later explicit selection switches themes. Both may be off. An old Kinich without a theme-level switch must be upgraded or disabled in the market first.
-- These changes are available since **1.3.0-rc.1**; the current candidate is **1.3.0-rc.2**, paired with **Kinich 2.0.3-rc.2**. Candidates use npm `next`, leaving `latest` unchanged. See [the upgrade specification](docs/UPGRADE_1.3.0_SPECIFICATION.md).
+- These changes are available since **1.3.0-rc.1**; the current candidate is **1.3.0-rc.3**, paired with **Kinich 2.0.3-rc.3**. Candidates use npm `next`, leaving `latest` unchanged. See [the upgrade specification](docs/UPGRADE_1.3.0_SPECIFICATION.md).
 
 ## Settings
+
+`1.3.0-rc.3` adds read-only light/dark palette previews drawn from the actual tokens, emitted text/button contrast protection, and balance request timeout/cancellation with disabled-consumer and stale-feedback guards. See [the development record](docs/ECOSYSTEM_OPTIMIZATION_2026-10-23.md).
 
 `1.3.0-rc.2` adds eight section shortcuts at the top of Settings: theme, visual intensity, companion, session feedback, environment, background, balance and reset. Clicking or keyboard activation scrolls to and focuses the target section. Candidates use npm `next`, leaving `latest` unchanged.
 

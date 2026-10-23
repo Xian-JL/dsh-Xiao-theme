@@ -9,9 +9,11 @@ import { isBelowCnyThreshold } from "./policy.js";
  * same guarded path, and the Host applies the real rate limits.
  */
 const IDLE = Object.freeze({ status: "loading", stale: false, refreshing: false });
+const CLIENT_REQUEST_TIMEOUT_MS = 15_000;
 
 let snapshot = IDLE;
 let request;
+let requestController;
 let pollTimer;
 let consumers = 0;
 let credentialGeneration = 0;
@@ -34,12 +36,16 @@ function decorate(value) {
 }
 
 export async function refreshBalance({ force = false } = {}) {
-	if (request !== undefined) return request;
+	if (request !== undefined && !requestController?.signal.aborted) return request;
 	const generation = credentialGeneration;
 	const ticket = ++sequence;
-	request = fetch(`/api/xiao-balance${force ? "?force=1" : ""}`, {
+	const controller = new AbortController();
+	requestController = controller;
+	const timeout = setTimeout(() => controller.abort(), CLIENT_REQUEST_TIMEOUT_MS);
+	const pending = fetch(`/api/xiao-balance${force ? "?force=1" : ""}`, {
 		credentials: "same-origin",
-		headers: { accept: "application/json" }
+		headers: { accept: "application/json" },
+		signal: controller.signal
 	}).then(async response => {
 		if (!response.ok) throw new Error(`xiao balance endpoint ${response.status}`);
 		const next = await response.json();
@@ -56,18 +62,23 @@ export async function refreshBalance({ force = false } = {}) {
 			});
 		}
 		return snapshot;
-	}).finally(() => { request = undefined; });
-	return request;
+	});
+	const tracked = pending.finally(() => {
+		clearTimeout(timeout);
+		if (request === tracked) { request = undefined; requestController = undefined; }
+	});
+	request = tracked;
+	return tracked;
 }
 
 /** Called when the official DeepSeek credential form changes. */
 export async function refreshBalanceForCredentialChange() {
 	credentialGeneration += 1;
 	sequence += 1;
-	const previous = request;
+	requestController?.abort();
 	publish({ status: "loading", stale: false, refreshing: false });
-	if (previous !== undefined) await previous;
-	return refreshBalance({ force: true });
+	// Do not wait for a replaced account's request, even if its transport ignores abort.
+	return consumers > 0 ? refreshBalance({ force: true }) : snapshot;
 }
 
 function schedulePoll() {
@@ -96,6 +107,8 @@ export function retainBalancePolling() {
 		if (consumers !== 0) return;
 		if (pollTimer !== undefined) clearInterval(pollTimer);
 		pollTimer = undefined;
+		sequence += 1;
+		requestController?.abort();
 		if (typeof document !== "undefined") {
 			document.removeEventListener("visibilitychange", handleVisibility);
 			window.removeEventListener("focus", handleFocus);
@@ -105,8 +118,10 @@ export function retainBalancePolling() {
 
 /** Test seam. */
 export function resetBalanceStore() {
+	requestController?.abort();
 	snapshot = IDLE;
 	request = undefined;
-	credentialGeneration = 0;
-	sequence = 0;
+	requestController = undefined;
+	credentialGeneration += 1;
+	sequence += 1;
 }

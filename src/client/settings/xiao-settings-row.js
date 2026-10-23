@@ -14,6 +14,8 @@ import { useXiaoSettings } from "../hooks/use-xiao-settings.js";
 import { writeXiaoSettings } from "./write.js";
 import { ActionButton, ChoiceGroup, RangeControl, SectionHeader, Toggle } from "./controls.js";
 import { normalizeXiaoBackgroundFile, XiaoBackgroundError } from "../background/image.js";
+import { getXiaoThemeTokens } from "../theme/tokens.js";
+import { ThemeColorPreview } from "./color-preview.js";
 
 /** A miniature of the real surface. It never moves the live companion. */
 function ThemePreview({ t, value }) {
@@ -107,6 +109,7 @@ export function XiaoSettingsRow({ settings, t }) {
 	const sectionId = key => `xiao-settings-${navigationId}-${key}`;
 	const snapshot = useXiaoSettings(settings);
 	const value = snapshot.value ?? DEFAULT_XIAO_SETTINGS;
+	const previewTokens = getXiaoThemeTokens(value.backgroundAutoPalette && value.customBackgroundImage ? value.customBackgroundAccent : "");
 	const [pending, setPending] = useState(null);
 	const [failed, setFailed] = useState(null);
 	const [resetArmed, setResetArmed] = useState(false);
@@ -219,6 +222,7 @@ export function XiaoSettingsRow({ settings, t }) {
 		}, t(label)))),
 
 		h(ThemePreview, { key: "preview", t, value }),
+		h(ThemeColorPreview, { key: "color-preview", tokens: previewTokens, t, className: "xiao-color-preview" }),
 
 		!writable && h("p", { className: "xiao-settings__notice", key: "readonly", role: "status" }, t("state.unavailable")),
 		failed && h("p", { className: "xiao-settings__error", key: "error", role: "alert" }, [

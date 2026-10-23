@@ -189,6 +189,11 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 	const rawSessionState = useSessionFeedback(mainSessionId);
 	const sessionState = FEEDBACK_PRIORITY.includes(rawSessionState) ? rawSessionState : "idle";
 	const balanceEnabled = value.enabled && value.balanceEnabled;
+	const balanceEnabledRef = useRef(balanceEnabled);
+	const balanceGeneration = useRef(0);
+	if (balanceEnabledRef.current !== balanceEnabled) balanceGeneration.current += 1;
+	balanceEnabledRef.current = balanceEnabled;
+	useEffect(() => () => { balanceGeneration.current += 1; }, []);
 	const balance = useBalance(balanceEnabled);
 	const overheated = balance.overheated === true;
 
@@ -208,6 +213,7 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 	const [reacting, setReacting] = useState(false);
 	const [panelOpen, setPanelOpen] = useState(false);
 	const [manualRefreshStatus, setManualRefreshStatus] = useState("idle");
+	useEffect(() => { if (!balanceEnabled) setManualRefreshStatus("idle"); }, [balanceEnabled]);
 	const [, refreshPanelPlacement] = useState(0);
 
 	const converged = value.convergeWhileRunning && (sessionState === "running" || sessionState === "sending");
@@ -418,8 +424,11 @@ export function XiaoOverlay({ settings, theme, t, useSessions }) {
 	};
 
 	const refreshManually = async () => {
+		if (!balanceEnabledRef.current) return;
+		const generation = balanceGeneration.current;
 		setManualRefreshStatus("loading");
 		const next = await refreshBalance({ force: true });
+		if (!balanceEnabledRef.current || generation !== balanceGeneration.current) return;
 		setManualRefreshStatus(next.status === "rate-limited" ? "limited"
 			: next.status === "unbound" || next.status === "unsupported" ? "idle"
 				: next.stale || next.status !== "ready" ? "failed" : "done");
